@@ -8,6 +8,6 @@ urlpatterns = [
 	url(r'^calculate_hours/(?P<user_id>[0-9]+)$',views.CalculateHrs.as_view()),
 	url(r'^taskdetail/(?P<user_id>[0-9]+)$',views.UserTaskDatewise.as_view()),
 	url(r'^list$',views.GetTask.as_view()),
-	url(r'^list/(?P<task_id>[0-9]+)$',views.GetTask.as_view()),
+	url(r'^list/(?P<task_id>[0-9]+)$',views.GetUsersTasks.as_view()),
 	url(r'',views.TaskView.as_view()),
 ]

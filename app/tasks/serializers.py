@@ -28,7 +28,7 @@ class TaskSerializer(serializers.ModelSerializer):
 		 
 	class Meta:
 		model =  Tasks
-		fields = ('id','user','project_name','user_name','project','date','billing_hour','non_billing_hour','total_hour','billing_description','non_billing_description','is_deleted','created_at','updated_at','status')
+		fields = ('id','user','project_name','user_name','project','hours','description','is_billing','is_deleted','created_at','updated_at')
 		extra_kwargs = {
 				'billing_hour': {
 				'required':True,
