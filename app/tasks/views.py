@@ -80,7 +80,7 @@ class EditTask(APIView):
 				return render(request,'edit_each_task.html',user_task_edit)				
 		except:
 			return Response("Error")
-		return render(request,'edittask.html')
+		return render(request,'get_task_list.html')
 
 	def post(self,request):
 		usertasks = Tasks.objects.all()
@@ -122,3 +122,10 @@ class CalculateHrs(APIView):
 		month_data = TaskSerializer(get_month_tasks,many=True)
 		return Response(month_data.data,status=status.HTTP_201_CREATED)
 
+class GetTask(TemplateView):
+	def get(self,request):
+		return render(request,'get_task_list.html')
+
+class GetUsersTasks(APIView):
+	def get(self,request):
+		print("test")
