@@ -141,7 +141,6 @@ class Login(TemplateView):
 			print(e)
 			return JsonResponse({'Error':'error'})
 					
-
 class WorkDetails(APIView):
 	##Written By Ashwin
 	def post(self,request):
@@ -170,9 +169,10 @@ class AssignProjectApi(APIView):
 			print(e)
 			return JsonResponse({'Error':'error'})
 
+##Written By Ashwin
 class UserTaskDetails(TemplateView):
 	def get(self,request):
-		return render(request,'user_task_details.html')
+		return render(request,'get_task_list.html')
 
 class ViewProjectApi(APIView):
 	def post(self,request):
@@ -219,9 +219,6 @@ class SendSmsView(APIView):
 			print(e)
 			return JsonResponse({'Error':'error'})
 
-class Demo(APIView):
-	def get(self,request):
-		return render(request,"404.html")
 
 class Dashboard(TemplateView):
 	def get(self,request):	
@@ -240,10 +237,7 @@ class SendSmsTemplate(TemplateView):
 
 class UserDetail(TemplateView):
 	def get(self,request):
-		userData = UserProfile.objects.all()
-		user_data = UserSerializer(userData, many=True)
-		data={"uname":user_data.data}
-		return render(request,'user_details.html',data)
+		return render(request,'user_details.html')
 
 class AdminDashboard(TemplateView):
 	def get(self,request):
@@ -291,5 +285,3 @@ class WorkDetailsTemplate(TemplateView):
 		user_data = UserSerializer(user_info, many=True)
 		user_dict = {"userslist":user_data.data}
 		return render(request,'datewise_details.html',user_dict)
-
-
