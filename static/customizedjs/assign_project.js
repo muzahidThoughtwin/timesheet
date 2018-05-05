@@ -6,7 +6,7 @@ $(document).ready(function() {
         var el = document.getElementsByName("csrfmiddlewaretoken");
         csrf_value = el[0].getAttribute("value");
         $.ajax({
-            url: "http://127.0.0.1:8000/user/assignproject",
+            url: "http://127.0.0.1:8000/admin/assignproject",
             type: "POST",
             data: {
                 'project': $("#select1").val(),

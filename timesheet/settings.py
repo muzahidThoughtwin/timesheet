@@ -71,7 +71,7 @@ ROOT_URLCONF = 'timesheet.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/home/hp/Projects/django/timesheet/timesheet/app/templates',],
+        'DIRS': ['/home/hp/Desktop/projects/django/timesheet/timesheet/app/templates',],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

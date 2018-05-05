@@ -2,7 +2,7 @@
     $(document).ready(function(event) {      
         var el = document.getElementsByName("csrfmiddlewaretoken");
               csrf_value = el[0].getAttribute("value");
-        var url = "http://127.0.0.1:8000/user/viewprojects";
+        var url = "http://127.0.0.1:8000/admin/viewprojects";
         $.ajax({
             url: url,
             type: "POST",
@@ -19,16 +19,16 @@
                     for(i=0;i<len;i++){
 
                       trHTML +=
-                                    '<tr><td>'
-                                    + resp.projects[i].id
-                                    + '</td><td>'
-                                    + resp.projects[i].name
-                                    + '</td><td>'
-                                    + resp.projects[i].description 
-                                    + '</td><td>'
-                                    + resp.projects[i].created_at
-                                    + '</td></tr>';
-                   
+                                '<tr><td>'
+                                + resp.projects[i].id
+                                + '</td><td>'
+                                + resp.projects[i].name
+                                + '</td><td>'
+                                + resp.projects[i].description 
+                                + '</td><td>'
+                                + resp.projects[i].created_at
+                                + '</td></tr>';
+               
                     }
                     $('#tBody').append(trHTML);
                     

@@ -5,7 +5,7 @@
               // csrf_value = el[0].getAttribute("value");
 
                  $.ajax({
-                  url: "http://127.0.0.1:8000/user/",
+                  url: "http://127.0.0.1:8000/admin/",
                   type:"POST",
                      data: {
                      'first_name': $("#first_name").val(),
