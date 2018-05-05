@@ -9,6 +9,7 @@
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="/static/customizedjs/datepicker.js"></script>
 <!-- <script type="text/javascript" src="/static/customizedjs/cal_weekly_hours.js"></script> -->
+<script type="text/javascript" src="/static/customizedjs/employee.js"></script>
 <script src="http://malsup.github.com/jquery.form.js"></script> 
 
 
@@ -17,13 +18,12 @@
          var userid = getCookie("user");
          var el = document.getElementsByName("csrfmiddlewaretoken");
          csrf_value = el[0].getAttribute("value");
-         var url = "http://127.0.0.1:8000/user/dashboard";
+         var url = "http://127.0.0.1:8000/user/assignedprojects";
          $.ajax({
              url: url,
              type: "POST",
              data: {
                  'userid': userid,
-                 'csrfmiddlewaretoken': csrf_value
              },
              dataType: "json",
              success: function(response) {
@@ -49,30 +49,6 @@
          });
      }); 
    </script>
-
-<!-- <script type="text/javascript">
-     $(document).ready(function(){
-             $("#billing_form").submit(function(event){
-              event.preventDefault();
-                 $.ajax({
-                  url: "http://127.0.0.1:8000/task/",
-                  type:"POST",
-                     data: {
-                     },
-                     dataType: "json",
-                     success: function(response){
-                     if(response){
-                       console.log(response);     
-                     }
-                 },
-                 error: function (err) {
-                   // alert("Error");
-                   return false;
-                 }
-               });
-             });
-         });
-</script> -->
 
 <script type="text/javascript">
   $(function(){
@@ -142,15 +118,15 @@ $(document).ready(function() {
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="/user/userprofile">
+                        <a class="nav-link" href="/user/editprofile">
                             <i class="fa fa-user fa" aria-hidden="true"></i>
                             <p>User Profile</p>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="/task/edittask">
+                        <a class="nav-link" href="tasks">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <p>Edit Task</p>
+                            <p>Task List</p>
                         </a>
                     </li>
                     

@@ -142,11 +142,10 @@ class Login(TemplateView):
 			return JsonResponse({'Error':'error'})
 					
 class Dashboard(TemplateView):
-	def get(self,request):	
-		user_dict = {"test":"yes"}
-		return render(request,'employee_dashboard.html',user_dict)
+	def get(self,request):
+		return render(request,'employee_dashboard.html')
 		
-	@csrf_exempt
+class UserAssignedProject(APIView):
 	def post(self,request,user_id=None):
 		userData = UserProjects.objects.all()
 		user_data = UserProjectSerializer(userData, many=True)
@@ -154,10 +153,7 @@ class Dashboard(TemplateView):
 
 class UserDetail(TemplateView):
 	def get(self,request):
-		userData = UserProfile.objects.all()
-		user_data = UserSerializer(userData, many=True)
-		data={"uname":user_data.data}
-		return render(request,'user_details.html',data)
+		return render(request,'user_details.html')
 
 class AdminDashboard(TemplateView):
 	def get(self,request):
@@ -242,11 +238,12 @@ class AssignProjectApi(APIView):
 			print(e)
 			return JsonResponse({'Error':'error'})
 
+##Written By Ashwin
 class UserTaskDetails(TemplateView):
 	def get(self,request):
-		return render(request,'user_task_details.html')
+		return render(request,'get_task_list.html')
 
-	##Written By Ashwin
+##Written By Ashwin
 class ViewProject(TemplateView):
 	def get(self,request):
 		return render(request,'viewproject.html')
@@ -297,6 +294,3 @@ class SendSms(APIView):
 			print(e)
 			return JsonResponse({'Error':'error'})
 
-class Demo(APIView):
-	def get(self,request):
-		return render(request,"404.html")
