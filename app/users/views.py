@@ -141,68 +141,8 @@ class Login(TemplateView):
 			print(e)
 			return JsonResponse({'Error':'error'})
 					
-class Dashboard(TemplateView):
-	def get(self,request):	
-		user_dict = {"test":"yes"}
-		return render(request,'employee_dashboard.html',user_dict)
-		
-	@csrf_exempt
-	def post(self,request,user_id=None):
-		userData = UserProjects.objects.all()
-		user_data = UserProjectSerializer(userData, many=True)
-		return JsonResponse({"tt":user_data.data})
-
-class UserDetail(TemplateView):
-	def get(self,request):
-		userData = UserProfile.objects.all()
-		user_data = UserSerializer(userData, many=True)
-		data={"uname":user_data.data}
-		return render(request,'user_details.html',data)
-
-class AdminDashboard(TemplateView):
-	def get(self,request):
-		return render(request,'admin_dashboard.html')
-
-class AdminDetails(TemplateView):
-	def get(self,request):
-		userData = UserProfile.objects.all()
-		user_data = UserSerializer(userData, many=True)
-		data={"uname":user_data.data}
-		return render(request,'admin_details.html',data)
-
-class AddUser(TemplateView):
-	def get(self,request):
-		return render(request,'adduser.html')
-
-class DeleteUser(TemplateView):
-	def get(self,request):
-		return render(request,'delete_user.html')
-
-class AddProject(TemplateView):
-	def get(self,request):
-		return render(request,'addproject.html')
-
-class ViewProject(TemplateView):
-	def get(self,request):
-		return render(request,'viewproject.html')
-
-	def post(self,request):
-			try:
-				project_Data= Projects.objects.all()
-				project_data = ProjectSerializer(project_Data,many=True)
-				project_all = { "projects":project_data.data}
-				return JsonResponse(project_all,status=status.HTTP_201_CREATED)
-			except Exception as err: 
-				print(err) 
-				return Response("Error",status=status.HTTP_404_NOT_FOUND)
 
 class WorkDetails(APIView):
-	def get(self,request):
-		user_info = UserProfile.objects.all()
-		user_data = UserSerializer(user_info, many=True)
-		user_dict = {"userslist":user_data.data}
-		return render(request,'datewise_details.html',user_dict)
-	
 	##Written By Ashwin
 	def post(self,request):
 		input_date= request.POST.get("date")
@@ -214,18 +154,6 @@ class WorkDetails(APIView):
 		task_data = TaskSerializer(get_tasks,many=True)
 		print(task_data.data)
 		return Response(task_data.data,status=status.HTTP_201_CREATED)
-
-## written by aarti
-class AssignProject(TemplateView):
-	def get(self,request):
-		project_Data= Projects.objects.all()
-		project_data = ProjectSerializer(project_Data,many=True)
-		project_dict={"projectlist":project_data.data}
-		userData = UserProfile.objects.all()
-		user_data = UserSerializer(userData, many=True)
-		user_dict={"userslist":user_data.data}
-		user_dict.update(project_dict)
-		return render(request,'assignproject.html',user_dict)
 
 ## written by aarti		
 class AssignProjectApi(APIView):
@@ -246,11 +174,7 @@ class UserTaskDetails(TemplateView):
 	def get(self,request):
 		return render(request,'user_task_details.html')
 
-	##Written By Ashwin
-class ViewProject(TemplateView):
-	def get(self,request):
-		return render(request,'viewproject.html')
-
+class ViewProjectApi(APIView):
 	def post(self,request):
 		try:
 			project_Data= Projects.objects.all()
@@ -275,10 +199,8 @@ class SendMail(APIView):
 	    return HttpResponseRedirect('/user/userprofile')
 
 
-class SendSms(APIView):
-	def get(self,request):
-		return render(request,"send_sms.html")
-
+class SendSmsView(APIView):
+	
 	def post(self,request):
 		try:
 			username = request.POST.get("username")
@@ -300,3 +222,74 @@ class SendSms(APIView):
 class Demo(APIView):
 	def get(self,request):
 		return render(request,"404.html")
+
+class Dashboard(TemplateView):
+	def get(self,request):	
+		user_dict = {"test":"yes"}
+		return render(request,'employee_dashboard.html',user_dict)
+		
+	@csrf_exempt
+	def post(self,request,user_id=None):
+		userData = UserProjects.objects.all()
+		user_data = UserProjectSerializer(userData, many=True)
+		return JsonResponse({"tt":user_data.data})
+
+class SendSmsTemplate(TemplateView):
+	def get(self,request):
+		return render(request,"send_sms.html")
+
+class UserDetail(TemplateView):
+	def get(self,request):
+		userData = UserProfile.objects.all()
+		user_data = UserSerializer(userData, many=True)
+		data={"uname":user_data.data}
+		return render(request,'user_details.html',data)
+
+class AdminDashboard(TemplateView):
+	def get(self,request):
+		return render(request,'admin_dashboard.html')
+
+class EditAdminDetails(TemplateView):
+	def get(self,request):
+		userData = UserProfile.objects.all()
+		user_data = UserSerializer(userData, many=True)
+		data={"uname":user_data.data}
+		return render(request,'admin_details.html',data)
+
+class AddUser(TemplateView):
+	def get(self,request):
+		return render(request,'adduser.html')
+
+class DeleteUser(TemplateView):
+	def get(self,request):
+		return render(request,'delete_user.html')
+
+class AddProject(TemplateView):
+	def get(self,request):
+		return render(request,'addproject.html')
+
+##Written By Ashwin
+class ViewProjectTemplate(TemplateView):
+	def get(self,request):
+		return render(request,'viewproject.html')
+
+## written by aarti
+class AssignProjectTemplate(TemplateView):
+	def get(self,request):
+		project_Data= Projects.objects.all()
+		project_data = ProjectSerializer(project_Data,many=True)
+		project_dict={"projectlist":project_data.data}
+		userData = UserProfile.objects.all()
+		user_data = UserSerializer(userData, many=True)
+		user_dict={"userslist":user_data.data}
+		user_dict.update(project_dict)
+		return render(request,'assignproject.html',user_dict)
+	
+class WorkDetailsTemplate(TemplateView):
+	def get(self,request):
+		user_info = UserProfile.objects.all()
+		user_data = UserSerializer(user_info, many=True)
+		user_dict = {"userslist":user_data.data}
+		return render(request,'datewise_details.html',user_dict)
+
+
