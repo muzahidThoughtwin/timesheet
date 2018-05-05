@@ -8,6 +8,7 @@ from datetime import datetime
 class Tasks(models.Model):
 	project = models.ForeignKey(Projects)
 	user = models.ForeignKey(User)
+	date = models.DateTimeField(default=datetime.now)
 	hours = models.TimeField(auto_now_add=False, blank=True)
 	description = models.CharField(max_length=1000,default='Description Not Provided')
 	is_billing = models.BooleanField(default=True)

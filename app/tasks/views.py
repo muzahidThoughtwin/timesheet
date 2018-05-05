@@ -21,6 +21,9 @@ class TaskView(APIView):
 
 	def post(self,request):
 		try:
+			print(request.data)
+			user = request.POST.get('user')
+			project = request.POST.get('project[1]')
 			task_data = TaskSerializer(data=request.data)
 			if not(task_data.is_valid()):
 				return Response(task_data.errors)
@@ -29,6 +32,8 @@ class TaskView(APIView):
 		except Exception as err:
 			print(err)
 			return Response("Error")
+
+
 
 ##Written By Ashwin
 class EditTask(APIView):
@@ -106,7 +111,7 @@ class GetTask(TemplateView):
 
 class GetUsersTasks(APIView):
 	def get(self,request,task_id=None):
-		# print("test")
+		print("test")
 		get_user_tasks = Tasks.objects.get(user_id=task_id)
 		user_tasks = TaskSerializer(get_user_tasks,many=True)
 		return Response(user_tasks.data,status=status.HTTP_201_CREATED)

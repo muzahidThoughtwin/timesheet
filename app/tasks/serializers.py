@@ -28,9 +28,15 @@ class TaskSerializer(serializers.ModelSerializer):
 		 
 	class Meta:
 		model =  Tasks
-		fields = ('id','user','project_name','user_name','project','hours','description','is_billing','is_deleted','created_at','updated_at')
+		fields = ('id','user','project_name','user_name','date','project','hours','description','is_billing','is_deleted','created_at','updated_at')
 		extra_kwargs = {
-				'billing_hour': {
+				'hour': {
+				'required':True,
+				'error_messages':{
+				'required':"Please fill this field",
+				}
+			},
+				'date': {
 				'required':True,
 				'error_messages':{
 				'required':"Please fill this field",

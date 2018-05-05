@@ -8,10 +8,10 @@
 <script type="text/javascript">
   $(document).ready(function(event) {
         var userid = getCookie("user");
-        var url = "http://127.0.0.1:8000/task/edittask";
+        var url = "http://127.0.0.1:8000/task/list/"+userid;
         $.ajax({
             url: url,
-            type: "POST",
+            type: "GET",
             dataType: "json",
             success: function(response) {
                console.log(response);
