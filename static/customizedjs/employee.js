@@ -3,10 +3,11 @@
 
 	var role = getCookie("role");
 	if (role != 3) {
-		setCookie("Authorization", "");
-		setCookie("id", "");
-		setCookie("role", "");
-		setCookie("user", "");
-		location.replace("login");
+		alert("U r not emplyee")
+		// setCookie("Authorization", "");
+		// setCookie("id", "");
+		// setCookie("role", "");
+		// setCookie("user", "");
+		// location.replace("login");
 	}
 });
