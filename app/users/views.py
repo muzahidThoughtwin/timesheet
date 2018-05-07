@@ -140,6 +140,14 @@ class Login(TemplateView):
 		except Exception as e:
 			print(e)
 			return JsonResponse({'Error':'error'})
+
+
+class UserAssignedProject(APIView):
+ 	def post(self,request,user_id=None):
+ 		userData = UserProjects.objects.all()
+ 		user_data = UserProjectSerializer(userData, many=True)
+ 		return JsonResponse({"tt":user_data.data})
+
 					
 class WorkDetails(APIView):
 	##Written By Ashwin

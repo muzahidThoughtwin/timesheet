@@ -7,7 +7,7 @@ app_name='users'
 urlpatterns = [
 	url(r'^user/login$',views.Login.as_view(),name='login'),
 	url(r'^user/dashboard$',views.Dashboard.as_view()),
-	url(r'^user/assignedprojects$',views.UserAssignedProject.as_view()),
+	# url(r'^user/assignedprojects$', views.UserAssignedProject.as_view()),
 	url(r'^user/editprofile$',views.UserDetail.as_view()),
 	url(r'^admin/dashboard$',views.AdminDashboard.as_view()),
 	url(r'^admin/editprofile$',views.EditAdminDetails.as_view()),
