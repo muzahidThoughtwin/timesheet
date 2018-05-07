@@ -30,6 +30,7 @@ class UserProfileList(APIView):
 	
 	def post(self,request):
 		try:
+			print("ji")
 			user = self.create_user(request)
 			if not(user):
 				return Response("Error while create user")
