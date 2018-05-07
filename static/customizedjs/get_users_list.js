@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 $(document).ready(function() {
 	 var url = "http://127.0.0.1:8000/user/";
 
@@ -8,7 +7,7 @@ $(document).ready(function() {
 		 dataType: "json",
 		 success: function(resp) {
 			 var len = resp.length;
-			 console.log(len)
+			 // console.log(len)
 			 var trHTML = '';
 			 // $.each(resp, function (i) {
 			 for (i = 0; i < len; i++) {
@@ -19,6 +18,8 @@ $(document).ready(function() {
 					 resp[i].first_name +
 					 '</td><td>' +
 					 resp[i].last_name +
+					 '</td><td>' +
+					 resp[i].role_name +
 					 '</td></tr>';
 			 }
 			 // });

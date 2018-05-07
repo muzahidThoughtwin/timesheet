@@ -7,20 +7,15 @@
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="/static/customizedjs/datepicker.js"></script>
 <script type="text/javascript">
-
           $(document).ready(function(){
              $("#datesubmitbutton").click(function(event){
               event.preventDefault();
-              
-             
                 $("#userlist").hide(1000);
               $("#datewiseusers").show();
-              
-
               var el = document.getElementsByName("csrfmiddlewaretoken");
               csrf_value = el[0].getAttribute("value");
               $.ajax({
-                  url: "http://127.0.0.1:8000/user/workdetails",
+                  url: "http://127.0.0.1:8000/admin/taskslist",
                   type:"POST",
                      data: {
                      'date': $("#datepicker-6").val(),
@@ -52,23 +47,46 @@
                    
                     }
                     $('#tBody').append(trHTML);
-                    
-
-                       
-                       
                      }
                  },
                  error: function (err) {
                    // alert("Error");
                    return false;
                  }
-         
                });
-         
              });
          });
+</script>
 
-	
+<script type="text/javascript">
+          $(document).ready(function(){
+              $.ajax({
+                  url: "http://127.0.0.1:8000/admin/alluserstasks",
+                  type:"GET",
+                     dataType: "json",
+                     success: function(resp){
+                     if(resp){
+                       console.log(resp);
+                       var trHTML = '';
+                       for(i=0;i<resp.length;i++){
+                        console.log(resp[i].first_name)
+                      trHTML +=
+                                    '<tr><td>'  
+                                    + resp[i].first_name
+                                    + '</td><td>'
+                                    + resp[i].last_name
+                                    + '</td><td>'
+                                    + resp[i].role 
+                                    + '</td></tr>';
+                    }
+                    $('#uBody').append(trHTML);
+                     }
+                 },
+                 error: function (err) {
+                   return false;
+                 }
+               });
+             });
 </script>
 
 <style>
@@ -185,31 +203,21 @@
 <tbody id="tBody"></tbody>
 </table>
 
-                            </div>
-                            <div id="userlist">
-                            <h4>Users List</h4>
-                                    <div class="container">
+</div>
+<div id="userlist">
+<h4>Users List</h4>
+<div class="container">
                                                  
-                              <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Firstname</th>
-                  <th>Lastname</th>
-                  <th>Role</th>
-                </tr>
-              </thead>
-                          <tbody>
-                <tr>
-                  {% for list in userslist %}
-                <tr>
-                  <td value="{{list.user}}"><a href="../task/taskdetail/{{list.user}}">{{list.first_name}}</a></td>
-                  <td value="{{list.user}}"><a href="../task/taskdetail/{{list.user}}">{{list.last_name}}</td>
-                  <td value ="{{list.user}}">{{list.role_name}}</td>
-                </tr>
-                {% endfor %}
-                </tr>
-              </tbody>
-            </table>
+<table class="table table-hover table-bordered">
+<thead>
+<tr>
+<th>First Name</th>
+<th>Last name</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody id="uBody"></tbody>
+</table>
                               
           </div>
                              

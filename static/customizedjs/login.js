@@ -35,7 +35,7 @@ $(document).ready(function() {
 												$("#alertmesg").hide();
 												$("#alertsuccess").show();
 												$("#alertsuccess").html("Login Successfully");
-												window.location = "admindashboard";
+												window.location = "admin/dashboard";
 										}
 										if (response.status == "404") {
 												$("#alertsuccess").hide();

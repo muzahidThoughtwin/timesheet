@@ -3,11 +3,11 @@ from app.tasks import views
 app_name='tasks'
 
 urlpatterns = [
-	url(r'^edittask$',views.EditTask.as_view()),
-	url(r'^edittask/(?P<user_id>[0-9]+)$',views.EditTask.as_view()),
-	url(r'^calculate_hours/(?P<user_id>[0-9]+)$',views.CalculateHrs.as_view()),
-	url(r'^taskdetail/(?P<user_id>[0-9]+)$',views.UserTaskDatewise.as_view()),
-	url(r'^list$',views.GetTask.as_view()),
-	url(r'^list/(?P<task_id>[0-9]+)$',views.GetUsersTasks.as_view()),
-	url(r'',views.TaskView.as_view()),
+	# url(r'^task/edittask$',views.EditTask.as_view()),
+	# url(r'^task/edittask/(?P<user_id>[0-9]+)$',views.EditTask.as_view()),
+	url(r'^task/calculate_hours/(?P<user_id>[0-9]+)$',views.CalculateHrs.as_view()),
+	url(r'^task/taskdetail/(?P<user_id>[0-9]+)$',views.UserTaskDatewise.as_view()),
+	url(r'^task/list$',views.GetTask.as_view()),
+	url(r'^task/list/(?P<task_id>[0-9]+)$',views.GetUsersTasks.as_view()),
+	url(r'^task',views.TaskView.as_view()),
 ]
