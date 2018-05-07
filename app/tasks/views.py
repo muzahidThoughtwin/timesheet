@@ -15,29 +15,51 @@ from app.users.models import UserProfile
 from datetime import datetime, timedelta
 
 
-
 ## written by aarti
 class TaskView(APIView):
 
+
+	# def post(self,request,**kwargs):
+	# 	try:
+	# 		print(request.data)
+	# 		if "data" in kwargs:
+ #        		data = kwargs["data"]
+ #        		if isinstance(data, list):
+ #            		kwargs["many"] = True
+	# 		user = request.POST.get('user')
+	# 		project = request.POST.get('project[1]')
+	# 		task_data = TaskSerializer(data=request.data)
+	# 		if not(task_data.is_valid()):
+	# 			return Response(task_data.errors)
+	# 		task_data.save()
+	# 		return Response(task_data.data,status=status.HTTP_201_CREATED)
+	# 	except Exception as err:
+	# 		print(err)
+			# return Response("Error")
+
+	def get(self,request):
+		
+		task_data = Tasks.objects.all()
+		return task_data
+		# task_value = TaskSerializer(task_data, many=True)
+		# return Response(task_value.data,status=status.HTTP_200_OK)
+
 	def post(self,request):
 		try:
-			print(request.data)
-			# desc = request.POST.get('description')[0:]
-			# print(desc)
-			# user = request.POST.get('user')
-			# print(user)
-			project = request.POST.get('project')
-			task_data = TaskSerializer(data=request.data)
-			if not(task_data.is_valid()):
-				return Response(task_data.errors)
-			task_data.save()
-			return Response(task_data.data,status=status.HTTP_201_CREATED)
+			task_created = []
+			for list_data in request.data:
+				task_created.append(list_data)
+			task_serializer = TaskSerializer(data=task_created, many=True)
+			if not(task_serializer.is_valid()):
+				return Response(task_serializer.errors)
+			task_serializer.save()
+			print(task_serializer.data[:])
+			return Response(task_serializer.data[:],status=status.HTTP_201_CREATED)
 		except Exception as err:
 			print(err)
 			return Response("Error")
 
-
-
+		
 ##Written By Ashwin
 # class EditTask(APIView):
 # 	def get(self,request,user_id=None):

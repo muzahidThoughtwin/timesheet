@@ -20,9 +20,8 @@ class TaskSerializer(serializers.ModelSerializer):
 	user_name = serializers.SerializerMethodField("getUserName")
 	def getUserName(self,obj):
 		try:
-			return UserProjects.objects.get(id=obj.project.id).id
-			# return UserProfile.objects.get(first_name=obj.first_name)
-			# return UserSerializer(UserProfile.objects.get(id=obj.project.id)).data
+			user = UserProfile.objects.get(user=obj.user.id)
+			return user.first_name+" "+user.last_name
 		except Exception as e:
 			print(e)
 		 

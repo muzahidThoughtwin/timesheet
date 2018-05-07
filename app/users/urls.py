@@ -26,8 +26,8 @@ urlpatterns = [
 	url(r'^user/tasks$',views.UserTaskDetails.as_view()),
 	url(r'^admin/deleteuser$',views.DeleteUser.as_view()),
 	url(r'^sendmail/(?P<user_id>[0-9]+)$',views.SendMail.as_view()),
-	url(r'^sendsms$',views.SendSmsTemplate.as_view()),
-	# url(r'',views.UserProfileList.as_view()),
+	url(r'^admin/sendsms$',views.SendSmsTemplate.as_view()),
+	url(r'',views.UserProfileList.as_view()),
 
 	# url(r'^api/$', views.home),
 	# url(r'^send/', views.sms),

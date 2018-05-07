@@ -59,29 +59,42 @@
       var project = $("select[name='project[]']").map(function(){return $(this).val();}).get();
       var desc= $("textarea[name='description[]']").map(function(){return $(this).val();}).get();
       var hour= $("input[name='hours[]']").map(function(){return $(this).val();}).get();
-      request = [];
+      request =  [];
       for(i=0;i<project.length;i++){
         req =  {};
-        req['date'] = date;  
-        req['billing'] = billing[i];  
-        req['project'] = project[i];  
-        req['description'] = desc[i];  
-        req['hours'] = hour[i];  
-        req['user'] = userid;  
+        req.date = date;  
+        req.billing = billing[i];  
+        req.project = project[i];  
+        req.description = desc[i];  
+        req.hours = hour[i];  
+        req.user = userid;  
         request.push(req);
       }
+
+        request = JSON.parse(JSON.stringify(request));
         console.log(request);
+
         var url = "http://127.0.0.1:8000/task/";
          $.ajax({
              url: url,
              type: "POST",
              data: request,
-             dataType: "json",
+             dataType: 'json',
+           // beforeSend: function(x) {
+           //    console.log('11111111111111111111111111111111111111111111');
+           //    console.log(x);
+           //    console.log('11111111111111111111111111111111111111111111');
+           //    // if (x && x.overrideMimeType) {
+           //    //   x.overrideMimeType("application/j-son;charset=UTF-8");
+           //    // }
+           //  },
              success: function(response) {
+              alert('we are here');
               console.log(response)
                 
              },
              error: function(err) {
+              alert('error');
                  return false;
              }
          });
@@ -272,7 +285,7 @@
   
 <input type="text" name="is_billing[]" id="is_billing" value="false" >
   </table>
-  <button class="center" id="saveTask" type="Submit">Submit</button>
+  <button class="center" id="saveTask" type="button">Submit</button>
     </form>
 </div>
 
