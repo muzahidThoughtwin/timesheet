@@ -16,7 +16,7 @@ $(document).ready(function() {
 			}
 					
 			$.ajax({
-					url: "http://127.0.0.1:8000/user/sendsms",
+					url: "http://127.0.0.1:8000/admin/sendsms",
 					type: "POST",
 					data: {
 							'username': username,

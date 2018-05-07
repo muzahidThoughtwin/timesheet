@@ -22,10 +22,10 @@ from django.contrib import admin
 
 urlpatterns = [
 
+    url(r'^', include('app.tasks.urls')),
     url(r'^', include('app.users.urls')),
     url(r'^role/', include('app.roles.urls')),
     url(r'^project/', include('app.projects.urls')),
-    url(r'^task/', include('app.tasks.urls')),
     url(r'^admin/', admin.site.urls),
 ] 
 # +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

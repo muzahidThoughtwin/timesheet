@@ -9,11 +9,17 @@
    <script type="text/javascript">
        $(document).ready(function(event) {
         var userid = getCookie("id");
+        var token = getCookie("Authorization")
+        alert('token')
         var url = "http://127.0.0.1:8000/admin/" + userid;
         $.ajax({
             url: url,
             type: "GET",
             dataType: "json",
+             headers: {
+                      'Authorization':token,
+                      
+                      },
             success: function(response) {
                 if (response) {
                     console.log(response);

@@ -1,10 +1,12 @@
  $(document).ready(function(){
              $("#adduserform").submit(function(event){
               event.preventDefault();
-              // var el = document.getElementsByName("csrfmiddlewaretoken");
-              // csrf_value = el[0].getAttribute("value");
-
+                var token = getCookie("Authorization")
                  $.ajax({
+                  headers: {
+                      'Authorization':token,
+                      
+                      },
                   url: "http://127.0.0.1:8000/admin/",
                   type:"POST",
                      data: {
@@ -17,7 +19,6 @@
                       'designation': $("#designation").val(),
                       'role': $("#role:checked").val(),  
                       
-                      // 'csrfmiddlewaretoken':csrf_value
                      },
                      dataType: "json",
                      success: function(response){

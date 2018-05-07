@@ -15,47 +15,52 @@ from app.users.models import UserProfile
 from datetime import datetime, timedelta
 
 
+
 ## written by aarti
 class TaskView(APIView):
 
-	# def post(self,request,**kwargs):
-	# 	try:
-	# 		print(request.data)
-	# 		if "data" in kwargs:
- #        		data = kwargs["data"]
- #        		if isinstance(data, list):
- #            		kwargs["many"] = True
-	# 		user = request.POST.get('user')
-	# 		project = request.POST.get('project[1]')
-	# 		task_data = TaskSerializer(data=request.data)
-	# 		if not(task_data.is_valid()):
-	# 			return Response(task_data.errors)
-	# 		task_data.save()
-	# 		return Response(task_data.data,status=status.HTTP_201_CREATED)
-	# 	except Exception as err:
-	# 		print(err)
-			# return Response("Error")
-
-	def get(self,request):
-		
-		task_data = Tasks.objects.all()
-		return task_data
-		# task_value = TaskSerializer(task_data, many=True)
-		# return Response(task_value.data,status=status.HTTP_200_OK)
-
 	def post(self,request):
-		# serializer = TaskSerializer(data=request.data, many=isinstance(request.data,list))
-		# serializer.is_valid(raise_exception=True)
-		task_created = []
-		for list_data in request.data:
-			task_created.append(list_data)
-		task_serializer = TaskSerializer(data=task_created, many=True)
-		if not(task_serializer.is_valid()):
-			return Response(task_serializer.errors)
-		task_serializer.save()
-		print(task_serializer.data[:])
-		return Response(task_serializer.data[:],status=status.HTTP_201_CREATED)
+		try:
+			task_data = TaskSerializer(data=request.data)
+			if not(task_data.is_valid()):
+				return Response(task_data.errors)
+			task_data.save()
+			return Response(task_data.data,status=status.HTTP_201_CREATED)
+		except Exception as err:
+			print(err)
+			return Response("Error")
+
+	def get(self,request,id=None):
+		if request.GET.get('id'):
+    		obj = Tasks.objects.filter(id=request.GET.get('id'))
+		if request.GET.get('user_id'):
+    		obj = Tasks.objects.filter(user=request.GET.get('user'))
+		if request.GET.get('date'):
+    		obj = Tasks.objects.filter(user=request.GET.get('user'), created_at=request.GET.get('date'))
+
+		user_tasks = TaskSerializer(obj)
 		
+		# import pdb;pdb.set_trace();
+		if(id):
+			task_data = Tasks.objects.get(pk=id)
+			user_tasks = TaskSerializer(task_data)
+		else:
+		task_data = Tasks.objects.all()
+		user_tasks = TaskSerializer(task_data,many=True)
+		return render(request,'datewise_all_details.html',user_tasks.data)
+		return Response(user_data.data,status=status.HTTP_200_OK)
+	
+	# def put(self,request,id):
+	# 	try:
+	# 		get_data = Tasks.objects.get(pk=id)
+	# 		update_data = TaskSerializer(get_data,data=request.data)
+	# 		if update_data.is_valid():
+	# 			update_data.save()
+	# 			return Response(update_data.data,status=status.HTTP_200_OK)
+	# 	except:
+	# 		return Response("Error")
+
+
 ##Written By Ashwin
 class EditTask(APIView):
 	def get(self,request,user_id=None):
@@ -86,10 +91,10 @@ class EditTask(APIView):
 			return Response("Error")
 		return render(request,'get_task_list.html')
 
-	# def post(self,request):
-	# 	usertasks = Tasks.objects.all()
-	# 	user_tasks = TaskSerializer(usertasks,many=True)
-	# 	return Response(user_tasks.data,status=status.HTTP_201_CREATED)
+	def post(self,request):
+		usertasks = Tasks.objects.all()
+		user_tasks = TaskSerializer(usertasks,many=True)
+		return Response(user_tasks.data,status=status.HTTP_201_CREATED)
 
 	def put(self,request,user_id):
 		try:
@@ -131,9 +136,5 @@ class GetTask(TemplateView):
 		return render(request,'get_task_list.html')
 
 class GetUsersTasks(APIView):
-	def get(self,request,task_id=None):
+	def get(self,request):
 		print("test")
-		get_user_tasks = Tasks.objects.get(user_id=task_id)
-		user_tasks = TaskSerializer(get_user_tasks,many=True)
-		return Response(user_tasks.data,status=status.HTTP_201_CREATED)
-		# return Response("hi")
