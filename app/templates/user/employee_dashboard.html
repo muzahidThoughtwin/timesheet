@@ -10,13 +10,13 @@
 <script type="text/javascript" src="/static/customizedjs/datepicker.js"></script>
 <!-- <script type="text/javascript" src="/static/customizedjs/cal_weekly_hours.js"></script> -->
 <script type="text/javascript" src="/static/customizedjs/employee.js"></script>
-<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script type="text/javascript" src="/static/js/jquery.form.js"></script> 
 
-       <script type = "text/javascript" >
+    <script type = "text/javascript" >
      $(document).ready(function(event) {
          var userid = getCookie("user");
-         var el = document.getElementsByName("csrfmiddlewaretoken");
-         csrf_value = el[0].getAttribute("value");
+         // var el = document.getElementsByName("csrfmiddlewaretoken");
+         // csrf_value = el[0].getAttribute("value");
          var url = "http://127.0.0.1:8000/user/assignedprojects";
          $.ajax({
              url: url,
@@ -26,7 +26,8 @@
              },
              dataType: "json",
              success: function(response) {
-                 var len = response.tt.length;
+              // console.log(response)
+                 var len = response.length;
                  $("#select1").empty();
                  $("#select2").empty();
                  var pname = "Select Project";
@@ -34,11 +35,11 @@
                  $("#select1").append("<option value='0'>" + pname + "</option>");
                  $("#select2").append("<option value='0'>" + nonpname + "</option>");
                  for (i = 0; i < len; i++) {
-                     if (response.tt[i].user == userid) {
-                         var projectid = response.tt[i].project;
-                         var name = response.tt[i].project_name;
-                         $("#select1").append("<option value='" + projectid + "'>" + name + "</option>");
-                         $("#select2").append("<option value='" + projectid + "'>" + name + "</option>");
+                     if (response[i].user == userid) {
+                         var projectid = response[i].project;
+                         var name = response[i].project_name;
+                         $(".select1").append("<option value='" + projectid + "'>" + name + "</option>");
+                         // $(".select1").append("<option value='" + projectid + "'>" + name + "</option>");
                      }
                  };
              },
@@ -48,6 +49,43 @@
          });
      }); 
    </script>
+
+<!-- <script type = "text/javascript" >
+     $(document).ready(function() {
+      $("#btn1").click(function(event) {
+        event.preventDefault();
+         var userid = getCookie("user");
+         var el = document.getElementsByTagName('description')[0];
+
+
+         // alert(el)
+         // for(i=0;i<3;i++){
+          var data = {
+                 'userid': userid,
+                 'projectid':$("#select1").val(),
+                 'description':el,
+                 'is_billing':$("#is_billing").val(),
+                 'date':"1212/12/12",
+           
+           }
+         // }
+         var url = "http://127.0.0.1:8000/task/";
+         $.ajax({
+             url: url,
+             type: "POST",
+             data: data,
+             dataType: "json",
+             success: function(response) {
+              console.log(response)
+                
+             },
+             error: function(err) {
+                 return false;
+             }
+         });
+     }); 
+    }); 
+   </script> -->
 
 <script type="text/javascript">
   $(function(){
@@ -60,38 +98,43 @@
 
 <script type="text/javascript">
 $(document).ready(function() { 
-    // var id = getCookie("id");
     datee=$("#datepicker-6").val();
+    var de=$("#billing_description").val();
 
     var urls = "http://127.0.0.1:8000/task/";
+    // for(i=0;i<=2;i++){
+          data = {
+
+          'date' : '2018-05-03',
+          'user': getCookie("user"),
+          'description':$("#description").val(),
+
+          }
+          console.log(data),
+      
+  // }
     $('#billing_form').ajaxForm({ 
 
         url : urls,
         type: "post",
-        data:{
-          // 'date' : $("#datepicker-6").val(),
-          'date' : '2018-05-03',
-          'user': getCookie("user"),
-        },
+        data:data,
         dataType:  'json',
         success:   processJson 
-    }); 
+    });
+    
 });
 </script>
 <script type="text/javascript">
   function processJson(data) { 
     console.log(data);
-    // alert($("#datepicker-6").val())
 }
 </script>
 
 <style>
 .ui-datepicker-trigger { 
     position:relative;
-    /*top:10px ;*/
     right:30px ; 
     height:25px }
- /* {} is the value according to your need */
 </style>
 
 </head>
@@ -182,20 +225,21 @@ $(document).ready(function() {
 <div class="col-md-12">
   <b>Enter Date: <input type = "text" id = "datepicker-6"></b>
   <br><br><br>
+  
     <div class="card card-plain table-plain-bg">
         <div class="card-header ">
+          <div id="Billing">
             <h4 class="card-title">Billing Hours</h4>
-            <br>
+            
             <!-- <input type="date" name="date"> -->
             <!-- <input type = "text" id = "datepicker-6"> -->
-        </div>
+        <!-- </div> -->
                                
   
 
 <div class="container">  
 <form id=billing_form>  
- {% csrf_token %}  
-
+ <!-- {% csrf_token %}   -->
  <div class="more">  
 <br>
 <table class="table table-bordered">
@@ -203,27 +247,30 @@ $(document).ready(function() {
 <tbody>
   <tr>
     <th>Project Name</th>
-    <td><select id="select1" name="project">
+    <td><select class="select1" id="select1" name="project">
     <option value="0">Select Project</option>
     </select><br></td>
       </tr>
       <tr>
         <th>Description</th>
-        <td><textarea rows="2" cols="75" placeholder="Description" id="billing_description" name="description"></textarea></td>
+        <td><textarea rows="2" cols="75" placeholder="Description" id="description" name="description"></textarea></td>
       </tr>
       <tr>
         <th>Time (Hours)</th>
-        <td><input type="time" name="hours" max="8" id="billing_hour">  [ hh:mm ]</td>
+        <td><input type="time" name="hours" max="8" id="hours">  [ hh:mm ]</td>
       </tr>
     </tbody>
 
   
+<input type="text" name="is_billing" id="is_billing" value="true" hidden="">
   </table>
   <button class="btn btn-primary btn-copy" type="button">Add More...</button>
 <br>
 </div>
-
   
+  </div>
+</div>
+  <div id="NonBilling">
 <br><br>
   <div class="card-header ">
      <h4 class="card-title">Non-Billing Hours</h4><br>
@@ -233,21 +280,22 @@ $(document).ready(function() {
 <tbody>
   <tr>
     <th>Project Name</th>
-    <td><select id="select2" name="project">
+    <td><select class="select1" id="select1" name="project">
         <option value="0">Select Project</option>
     </select></td>
       </tr>
       <tr>
         <th>Description</th>
-        <td><textarea rows="2" cols="75" placeholder="Description" id="non_billing_description" name="description"></textarea></td>
+        <td><textarea rows="2" cols="75" placeholder="Description" id="description" name="description"></textarea></td>
       </tr>
       <tr>
         <th>Time (Hours)</th>
-        <td><input type="time" name="hours" id="non_billing_hour">  [ hh:mm ]</td>
+        <td><input type="time" name="hours" id="hour">  [ hh:mm ]</td>
       </tr>
     </tbody>
 
   
+<input type="text" name="is_billing" value="false" hidden="">
   </table>
   <button class="center" id="btn1" type="Submit">Submit</button>
     </form>
@@ -282,7 +330,7 @@ $(document).ready(function() {
 <script src="/static/js/core/popper.min.js" type="text/javascript"></script>
 <script src="/static/js/core/bootstrap.min.js" type="text/javascript"></script>
 <script src="/static/js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script> -->
-<script type="text/javascript" src="/static/customizedjs/jquery.validate.js"></script>
+<!-- <script type="text/javascript" src="/static/customizedjs/jquery.validate.js"></script>
    <script>
       $("#billing_form").validate({
               rules: {
@@ -293,6 +341,7 @@ $(document).ready(function() {
                   
               }
           })
-   </script>
+   </script> -->
+   
 
 </html>

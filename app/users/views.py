@@ -175,20 +175,19 @@ class AssignProjectApi(APIView):
 			return Response(user_data.data,status=status.HTTP_201_CREATED)
 		except Exception as e:
 			print(e)
-			return JsonResponse({'Error':'error'})
+			return Response("Error in assigning project")
 
 ##Written By Ashwin
 class UserTaskDetails(TemplateView):
 	def get(self,request):
-		return render(request,'get_task_list.html')
+		return render(request,'user/get_task_list.html')
 
 class ViewProjectApi(APIView):
 	def post(self,request):
 		try:
 			project_Data= Projects.objects.all()
 			project_data = ProjectSerializer(project_Data,many=True)
-			project_all = { "projects":project_data.data}
-			return JsonResponse(project_all,status=status.HTTP_201_CREATED)
+			return Response(project_data.data,status=status.HTTP_201_CREATED)
 		except Exception as err: 
 			print(err) 
 			return Response("Error",status=status.HTTP_404_NOT_FOUND)
@@ -196,16 +195,15 @@ class ViewProjectApi(APIView):
 ##Written By Ashwin
 class SendMail(APIView):
 	def get(self,request,user_id):
-	    subject = 'Password Changed'
-	    get_email = User.objects.get(id = user_id)
-	    from_email = 'admin@thoughtwin.com'
-	    html_content = "<div><img height='30px' src='https://image.ibb.co/drN81x/1_1.png'><br/><br/><hr><div><h2 style='font-family: Verdana, sans-serif;'>Your Thoughtwin Timesheet password has changed</h2></div><div style='font-family: Verdana, sans-serif;'>Hi "+str(get_email)+",<br><br>We are sending you this notification because your password for Thoughtwin Timesheet has changed.<br><br>If you have not changed it please click below link or button to login again and change your password manually.<br><br><button style='margin: 20px;color: white;background-color: #337AB7;border: 1px;height: 30px;width: 160px; text-decoration:none;font-size: 18px;border-radius: 10px;'><a href='http://127.0.0.1:8000/user/login' target='_blank' style='color: white;text-decoration: none;'> Login</a></button><br><br><a href='http://127.0.0.1:8000/user/login'>http://127.0.0.1:8000/user/login</a> <br><br><br><br>Best Regards<br><br>Thoughtwin team</div></div>"
-	    text_content = ""
-	    msg = EmailMultiAlternatives(subject,text_content, from_email, [get_email])
-	    msg.attach_alternative(html_content, "text/html")
-	    msg.send()
-	    return HttpResponseRedirect('/user/userprofile')
-
+		subject = 'Password Changed'
+		get_email = User.objects.get(id = user_id)
+		from_email = 'admin@thoughtwin.com'
+		html_content = "<div><img height='30px' src='https://image.ibb.co/drN81x/1_1.png'><br/><br/><hr><div><h2 style='font-family: Verdana, sans-serif;'>Your Thoughtwin Timesheet password has changed</h2></div><div style='font-family: Verdana, sans-serif;'>Hi "+str(get_email)+",<br><br>We are sending you this notification because your password for Thoughtwin Timesheet has changed.<br><br>If you have not changed it please click below link or button to login again and change your password manually.<br><br><button style='margin: 20px;color: white;background-color: #337AB7;border: 1px;height: 30px;width: 160px; text-decoration:none;font-size: 18px;border-radius: 10px;'><a href='http://127.0.0.1:8000/user/login' target='_blank' style='color: white;text-decoration: none;'> Login</a></button><br><br><a href='http://127.0.0.1:8000/user/login'>http://127.0.0.1:8000/user/login</a> <br><br><br><br>Best Regards<br><br>Thoughtwin team</div></div>"
+		text_content = ""
+		msg = EmailMultiAlternatives(subject,text_content, from_email, [get_email])
+		msg.attach_alternative(html_content, "text/html")
+		msg.send()
+		return HttpResponseRedirect('/user/editprofile')
 
 class SendSmsView(APIView):
 	
@@ -230,14 +228,14 @@ class SendSmsView(APIView):
 
 class Dashboard(TemplateView):
 	def get(self,request):	
-		user_dict = {"test":"yes"}
-		return render(request,'employee_dashboard.html',user_dict)
+		return render(request,'user/employee_dashboard.html')
 		
+class UserAssignedProject(APIView):
 	@csrf_exempt
 	def post(self,request,user_id=None):
 		userData = UserProjects.objects.all()
 		user_data = UserProjectSerializer(userData, many=True)
-		return JsonResponse({"tt":user_data.data})
+		return Response(user_data.data)
 
 class SendSmsTemplate(TemplateView):
 	def get(self,request):
@@ -245,38 +243,40 @@ class SendSmsTemplate(TemplateView):
 
 class UserDetail(TemplateView):
 	def get(self,request):
-		return render(request,'user_details.html')
+		return render(request,'user/user_details.html')
 
 class AdminDashboard(TemplateView):
 	def get(self,request):
-		return render(request,'admin_dashboard.html')
+		return render(request,'admin/admin_dashboard.html')
 
 class EditAdminDetails(TemplateView):
 	def get(self,request):
-		userData = UserProfile.objects.all()
-		user_data = UserSerializer(userData, many=True)
-		data={"uname":user_data.data}
-		return render(request,'admin_details.html',data)
+		return render(request,'admin/admin_details.html')
 
 class AddUser(TemplateView):
 	def get(self,request):
-		return render(request,'adduser.html')
+		return render(request,'admin/adduser.html')
 
 class DeleteUser(TemplateView):
 	def get(self,request):
-		return render(request,'delete_user.html')
+		return render(request,'admin/delete_user.html')
 
 class AddProject(TemplateView):
 	def get(self,request):
-		return render(request,'addproject.html')
+		return render(request,'admin/addproject.html')
 
 ##Written By Ashwin
 class ViewProjectTemplate(TemplateView):
 	def get(self,request):
-		return render(request,'viewproject.html')
+		return render(request,'admin/viewproject.html')
 
 ## written by aarti
 class AssignProjectTemplate(TemplateView):
+	def get(self,request):
+		return render(request,'admin/assignproject.html')
+
+##Written By Ashwin
+class GetAssignProject(APIView):
 	def get(self,request):
 		project_Data= Projects.objects.all()
 		project_data = ProjectSerializer(project_Data,many=True)
@@ -285,11 +285,17 @@ class AssignProjectTemplate(TemplateView):
 		user_data = UserSerializer(userData, many=True)
 		user_dict={"userslist":user_data.data}
 		user_dict.update(project_dict)
-		return render(request,'assignproject.html',user_dict)
+		return Response(user_dict)
 	
 class WorkDetailsTemplate(TemplateView):
 	def get(self,request):
+		return render(request,'admin/datewise_details.html')
+
+##Written By Ashwin
+class AllWorkDetails(APIView):
+	def get(self,request):
+		print("hi")
 		user_info = UserProfile.objects.all()
 		user_data = UserSerializer(user_info, many=True)
-		user_dict = {"userslist":user_data.data}
-		return render(request,'datewise_details.html',user_dict)
+		return Response(user_data.data)
+

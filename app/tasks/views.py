@@ -18,6 +18,7 @@ from datetime import datetime, timedelta
 ## written by aarti
 class TaskView(APIView):
 
+
 	# def post(self,request,**kwargs):
 	# 	try:
 	# 		print(request.data)
@@ -44,62 +45,60 @@ class TaskView(APIView):
 		# return Response(task_value.data,status=status.HTTP_200_OK)
 
 	def post(self,request):
-		# serializer = TaskSerializer(data=request.data, many=isinstance(request.data,list))
-		# serializer.is_valid(raise_exception=True)
-		task_created = []
-		for list_data in request.data:
-			task_created.append(list_data)
-		task_serializer = TaskSerializer(data=task_created, many=True)
-		if not(task_serializer.is_valid()):
-			return Response(task_serializer.errors)
-		task_serializer.save()
-		print(task_serializer.data[:])
-		return Response(task_serializer.data[:],status=status.HTTP_201_CREATED)
+		try:
+			task_created = []
+			for list_data in request.data:
+				task_created.append(list_data)
+			task_serializer = TaskSerializer(data=task_created, many=True)
+			if not(task_serializer.is_valid()):
+				return Response(task_serializer.errors)
+			task_serializer.save()
+			print(task_serializer.data[:])
+			return Response(task_serializer.data[:],status=status.HTTP_201_CREATED)
+		except Exception as err:
+			print(err)
+			return Response("Error")
+
 		
 ##Written By Ashwin
-class EditTask(APIView):
-	def get(self,request,user_id=None):
-		try:
-			# import pdb;pdb.set_trace();
-			id_list = []
-			data_list=[]
-			if(user_id):
-				get_data = Tasks.objects.get(pk=user_id)
-				task_data = TaskSerializer(get_data)
-				task_dict = task_data.data
-				project_id = task_dict['project'].split(',')
-				project_ids =list(map(int,project_id))
-				get_project_data = Projects.objects.all()
-				project_data = ProjectSerializer(get_project_data,many=True)
-				date_value = project_data.data
-				for index in date_value:
-					list_value = index.items()
-					dict_data = dict(list_value)
-					data_list.append(dict_data['id'])
-				for index in project_ids:
-					if index in data_list:
-						id_list.append(index)
-						task_dict['project']=id_list
-						user_task_edit = {"usertasks":task_dict}
-				return render(request,'edit_each_task.html',user_task_edit)				
-		except:
-			return Response("Error")
-		return render(request,'get_task_list.html')
+# class EditTask(APIView):
+# 	def get(self,request,user_id=None):
+# 		try:
+# 			# import pdb;pdb.set_trace();
+# 			id_list = []
+# 			data_list=[]
+# 			if(user_id):
+# 				get_data = Tasks.objects.get(pk=user_id)
+# 				task_data = TaskSerializer(get_data)
+# 				task_dict = task_data.data
+# 				project_id = task_dict['project'].split(',')
+# 				project_ids =list(map(int,project_id))
+# 				get_project_data = Projects.objects.all()
+# 				project_data = ProjectSerializer(get_project_data,many=True)
+# 				date_value = project_data.data
+# 				for index in date_value:
+# 					list_value = index.items()
+# 					dict_data = dict(list_value)
+# 					data_list.append(dict_data['id'])
+# 				for index in project_ids:
+# 					if index in data_list:
+# 						id_list.append(index)
+# 						task_dict['project']=id_list
+# 						user_task_edit = {"usertasks":task_dict}
+# 				return render(request,'edit_each_task.html',user_task_edit)				
+# 		except:
+# 			return Response("Error")
+# 		return render(request,'get_task_list.html')
 
-	# def post(self,request):
-	# 	usertasks = Tasks.objects.all()
-	# 	user_tasks = TaskSerializer(usertasks,many=True)
-	# 	return Response(user_tasks.data,status=status.HTTP_201_CREATED)
-
-	def put(self,request,user_id):
-		try:
-			get_data = Tasks.objects.get(pk=user_id)
-			user_tasks = TaskSerializer(get_data,data=request.data)
-			if user_tasks.is_valid():
-				user_tasks.save()
-				return Response(user_tasks.data,status=status.HTTP_200_OK)
-		except:
-			return Response("Error",status=status.HTTP_400_BAD_REQUEST)
+	# def put(self,request,user_id):
+	# 	try:
+	# 		get_data = Tasks.objects.get(pk=user_id)
+	# 		user_tasks = TaskSerializer(get_data,data=request.data)
+	# 		if user_tasks.is_valid():
+	# 			user_tasks.save()
+	# 			return Response(user_tasks.data,status=status.HTTP_200_OK)
+	# 	except:
+	# 		return Response("Error",status=status.HTTP_400_BAD_REQUEST)
 
 
 ## written by aarti
@@ -132,8 +131,7 @@ class GetTask(TemplateView):
 
 class GetUsersTasks(APIView):
 	def get(self,request,task_id=None):
-		print("test")
-		get_user_tasks = Tasks.objects.get(user_id=task_id)
-		user_tasks = TaskSerializer(get_user_tasks,many=True)
-		return Response(user_tasks.data,status=status.HTTP_201_CREATED)
-		# return Response("hi")
+		print("ko")
+		# get_user_tasks = Tasks.objects.get(user_id=task_id)
+		# user_tasks = TaskSerializer(get_user_tasks,many=True)
+		return Response(status=status.HTTP_201_CREATED)

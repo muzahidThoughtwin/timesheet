@@ -9,21 +9,17 @@
         var el = document.getElementsByName("csrfmiddlewaretoken");
         csrf_value = el[0].getAttribute("value");
            $.ajax({
-            url: "http://127.0.0.1:8000/user/assignprojectdetails",
+            url: "http://127.0.0.1:8000/admin/assignprojectdetails",
             type:"POST",
                data: {
               'project':$("#select1").val(),
-              'user'   :$("#select2").val(),      
-              // 'project':$("#select1").val(),
-              // 'user': "1",
+              'user'   :$("#select2").val(),
                 'csrfmiddlewaretoken':csrf_value
                },
               dataType: "json",
               success: function(response){
               console.log(response);
                $('.alert').show();
-  
-                 // alert("Details updated  ")
                     window.setTimeout(function() {
                     $(".alert").fadeTo(500, 0).slideUp(500, function(){
                     $(this).remove(); 
@@ -43,6 +39,34 @@
        });
    });
    
+</script>
+ <script type="text/javascript">
+  $(document).ready(function(){
+           $.ajax({
+            url: "http://127.0.0.1:8000/admin/getassignedproject",
+            type:"GET",
+              dataType: "json",
+              success: function(response){
+                if(response){
+                  var projectlen=response.projectlist.length;
+                  var userslen=response.userslist.length;
+               for (i = 0; i < projectlen; i++) {
+                        var projectid = response.projectlist[i].id;
+                        var name = response.projectlist[i].name;
+                        $("#select1").append("<option value='" + projectid + "'>" + name + "</option>");
+                 };
+                for (i = 0; i < userslen; i++) {
+                        var userid = response.userslist[i].user;
+                        var username = response.userslist[i].first_name + " " +response.userslist[i].last_name;
+                        $("#select2").append("<option value='" + userid + "'>" + username + "</option>");
+                 };
+                }
+           },
+           error: function (err) {
+             return false;
+           }
+       });
+   });
 </script>
 <body>
   <div class="wrapper">
@@ -120,21 +144,17 @@
           <form method="POST" name="assignprojectdetailsform">
             <div>
               <span>Project Name:</span>
-              <select id="select1">
-                {% for list in projectlist %}
-                <option value="{{list.id}}" id="projectid">{{list.id}} | {{list.name}}</option>
-                {% endfor %}
-              </select>
+                <select id="select1">
+                <option value="0">Select Project</option>
+                </select>
               <br>
             </div>
             <div>
               <br><br>
               <span>Select User</span>
               <select id="select2">
-                {% for list in userslist %}
-                  <option value="{{list.user}}" id="userid"> {{list.first_name}} {{list.last_name}}</option>
-                {% endfor %}
-              </select>
+                <option value="0">Select User</option>
+                </select>
               <br><br><br>
               <button id="Button2" type="Submit">Submit</button>
             </div>

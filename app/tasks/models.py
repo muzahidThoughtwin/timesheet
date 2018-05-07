@@ -12,5 +12,5 @@ class Tasks(models.Model):
 	description = models.CharField(max_length=1000,default='Description Not Provided')
 	is_billing = models.BooleanField(default=True)
 	is_deleted = models.BooleanField(default=False)
-	created_at = models.DateTimeField(default=datetime.now)
+	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now_add=True)
