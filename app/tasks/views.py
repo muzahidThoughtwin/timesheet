@@ -16,11 +16,11 @@ from app.projects.serializers import ProjectSerializer
 from app.projects.models import Projects
 from app.users.models import UserProfile
 from datetime import datetime, timedelta
-
+from django.utils import timezone 
 
 ## written by aarti
 class TaskView(APIView):
-	# permission_classes = (IsAuthenticatedOrCreate,)
+
 	def get(self,request,user_id=None):
 		# if(user_id):
 		# 	userprofile = UserProfile.objects.get(pk=user_id)
@@ -29,34 +29,32 @@ class TaskView(APIView):
 		task_data = Tasks.objects.all()
 		get_data = TaskSerializer(userData, many=True)
 		return Response(get_data.data,status=status.HTTP_200_OK)
-	# def get(self,request):
-		
-	# 	task_data = Tasks.objects.all()
-	# 	return task_data
 		
 	def post(self,request):
 		try:
-			task_created = []
-			for list_data in request.data:
-				task_created.append(list_data)
-			task_serializer = TaskSerializer(data=task_created, many=True)
-			if not(task_serializer.is_valid()):
-				return Response(task_serializer.errors)
-			task_serializer.save()
-			print(task_serializer.data[:])
-			return Response(task_serializer.data[:],status=status.HTTP_201_CREATED)
+			task_data = TaskSerializer(data=request.data)
+			if not(task_data.is_valid()):
+				return Response(task_data.errors)
+			task_data.save()
+			return Response(task_data.data,status=status.HTTP_201_CREATED)
 		except Exception as err:
 			print(err)
 			return Response("Error")
-
+		
 	def put(self,request,task_id):
 		try:
 			get_data = Tasks.objects.get(pk=task_id)
-			update_data = TaskSerializer(get_data,data=request.data)
-			if update_data.is_valid():
-				update_data.save()
-				return Response(update_data.data)
-		except:
+			date_diff = (datetime.now().date() - get_data.date).days
+			if (date_diff < 6):
+				update_data = TaskSerializer(get_data, data=request.data)
+				if update_data.is_valid():
+					update_data.save()
+					return Response("Data updated Successfully")
+				else:
+					return Response(update_data.errors)			
+			return Response("you are not able to update" ,status=status.HTTP_400_BAD_REQUEST)
+		except Exception as err:
+			print(err)
 			return Response("Error" ,status=status.HTTP_400_BAD_REQUEST)
 
 
