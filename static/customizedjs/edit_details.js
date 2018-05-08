@@ -4,7 +4,7 @@
 		 var id = getCookie("id");
 		 var user = getCookie("user");
 		 var role = getCookie("role");
-		 var url = "http://127.0.0.1:8000/user/" + id;
+		 var url =  baseUrl+"user/" + id;
 		 var token = getCookie("Authorization");
 		 $.ajax({
 		 	 headers: {

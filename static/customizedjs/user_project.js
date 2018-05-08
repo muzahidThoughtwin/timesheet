@@ -1,16 +1,14 @@
 $(document).ready(function() {
     $("#adduserform").submit(function(event) {
         event.preventDefault();
-        var el = document.getElementsByName("csrfmiddlewaretoken");
-        csrf_value = el[0].getAttribute("value");
+        var url = baseUrl+"admin/assignproject"
         $.ajax({
-            url: "http://127.0.0.1:8000/admin/assignproject",
+            url: url,
             type: "POST",
             data: {
 
                 'inputEmail': $("#projectList").val(),
                 'inputPassword': $("#Password").val(),
-                'csrfmiddlewaretoken': csrf_value
             },
             dataType: "json",
             success: function(response) {

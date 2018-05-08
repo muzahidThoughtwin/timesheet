@@ -5,6 +5,7 @@
       <link href="/static/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="/static/customizedjs/session.js"></script>
       <script type="text/javascript" src="/static/customizedjs/cookies.js"></script>
       <!-- <script type="text/javascript" src="/static/customizedjs/login.js"></script> -->
       <link rel="stylesheet" type="text/css" href="/static/css/login_page.css">
@@ -12,16 +13,17 @@
          $(document).ready(function(){
              $("#Button2").click(function(event){
               event.preventDefault();
-              var el = document.getElementsByName("csrfmiddlewaretoken");
-              csrf_value = el[0].getAttribute("value");
+              var url = baseUrl+"login";
+              // var el = document.getElementsByName("csrfmiddlewaretoken");
+              // csrf_value = el[0].getAttribute("value");
                  $.ajax({
-                  url: "http://127.0.0.1:8000/login",
+                  url:url,
                   type:"POST",
                      data: {
          
                       'inputEmail': $("#Username").val(),
                       'inputPassword': $("#Password").val(), 
-                      'csrfmiddlewaretoken':csrf_value
+                      // 'csrfmiddlewaretoken':csrf_value
                      },
                      dataType: "json",
                      success: function(response){
@@ -50,7 +52,7 @@
                          window.location = "../admin/dashboard";
                        }
                        if(response.status=="404"){
-                         $("#alertsuccess")  .hide();
+                         $("#alertsuccess").hide();
                          $("#alertmesg").show();
                          $("#alertmesg").html("Username or password does not exist");
                          return false;

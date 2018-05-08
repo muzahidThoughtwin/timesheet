@@ -1,9 +1,13 @@
-$(document).ready(function(event) {
+ $(document).ready(function(event) {
     var urls = $(location).attr('href'),
     value = urls.split("/"),
     user_id = value[value.length-1];
-    var url = "http://127.0.0.1:8000/task/edittask";
-            $.ajax({
+    var url = baseUrl+"task/edittask";
+    var token = getCookie("Authorization");
+        $.ajax({
+            headers: {
+                      'Authorization':token,
+                      },
             url: url,
             type: "POST",
             dataType: "json",
@@ -45,6 +49,4 @@ $(document).ready(function(event) {
 
         });
 
-
     });
-

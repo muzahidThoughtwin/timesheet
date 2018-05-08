@@ -1,61 +1,60 @@
 {% include "header.html" %}
-      <script>
-         checkCookie();
-      </script>
+     
+<script type="text/javascript" src="/static/customizedjs/session.js"></script>
  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>  -->
-     <script type="text/javascript" src="/static/js/jquery.form.js"></script>
-   <!-- <script type="text/javascript" src="/static/customizedjs/get_details.js"></script> -->
-   <script type="text/javascript" src="/static/customizedjs/cal_weekly_hours.js"></script>
-   
-   <script type="text/javascript">
-       $(document).ready(function(event) {
-        var token = getCookie("Authorization");
-        var userid = getCookie("id");
-        var url = "http://127.0.0.1:8000/user/" + userid;
-        $.ajax({
-            headers: {
-                  'Authorization':token,
-                  },
-            url: url,
-            type: "GET",
-            dataType: "json",
-            success: function(response) {
-                if (response) {
-                    console.log(response);
-                    document.getElementById("fname").innerHTML = response.first_name;
-                    document.getElementById("lname").innerHTML = response.last_name;
-                    document.getElementById("username").innerHTML = response.user_name;
-                    document.getElementById("first_name").innerHTML = response.first_name;
-                    document.getElementById("last_name").innerHTML = response.last_name;
-                    document.getElementById("mobile").innerHTML = response.mobile;
-                    document.getElementById("dob").innerHTML = response.dob;
-                    document.getElementById("gender").innerHTML = response.gender;
-                    document.getElementById("designation").innerHTML = response.designation;
-                    var pic="/static/"+response.model_pic;                
-                     $('#profileimg').html('<img class="avatar border-gray" src='+pic+'/>')  
-                    if (response.status == 200) {
-                        alert("Got details!");
-                        console.log("response 200 coming");
-                    }
-                    if (response.status == 404) {
-                        console.log("Error in Getting user details")
-                        alert("Error in creating user")
-                    }
+<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+<!-- <script type="text/javascript" src="/static/customizedjs/get_details.js"></script> -->
+<!-- <script type="text/javascript" src="/static/customizedjs/cal_weekly_hours.js"></script> -->
 
+<script type="text/javascript">
+   $(document).ready(function(event) {
+    var token = getCookie("Authorization");
+    var userid = getCookie("id");
+    var url = baseUrl+"user/" + userid;
+    $.ajax({
+        headers: {
+              'Authorization':token,
+              },
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            if (response) {
+                console.log(response);
+                document.getElementById("fname").innerHTML = response.first_name;
+                document.getElementById("lname").innerHTML = response.last_name;
+                document.getElementById("username").innerHTML = response.user_name;
+                document.getElementById("first_name").innerHTML = response.first_name;
+                document.getElementById("last_name").innerHTML = response.last_name;
+                document.getElementById("mobile").innerHTML = response.mobile;
+                document.getElementById("dob").innerHTML = response.dob;
+                document.getElementById("gender").innerHTML = response.gender;
+                document.getElementById("designation").innerHTML = response.designation;
+                var pic="/static/"+response.model_pic;                
+                 $('#profileimg').html('<img class="avatar border-gray" src='+pic+'/>')  
+                if (response.status == 200) {
+                    alert("Got details!");
+                    console.log("response 200 coming");
                 }
-            },
-            error: function(err) {
-                return false;
+                if (response.status == 404) {
+                    console.log("Error in Getting user details")
+                    alert("Error in creating user")
+                }
+
             }
-        });
+        },
+        error: function(err) {
+            return false;
+        }
     });
-   </script>
+});
+</script>
 <!-- <script type="text/javascript" src="/static/customizedjs/edit_details.js"></script> -->
 <script type="text/javascript">
 $(document).ready(function() { 
     var token = getCookie("Authorization");
     var id = getCookie("id");
-    var urls = "http://127.0.0.1:8000/user/" + id;
+    var urls = baseUrl+"user/" + id;
     $('#userdetailform').ajaxForm({ 
         headers: {
                   'Authorization':token,

@@ -1,10 +1,6 @@
-  
 {% include "header.html" %}
-
-      <script>
-         checkCookie();
-      </script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="/static/customizedjs/session.js"></script>
 <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="/static/customizedjs/datepicker.js"></script>
@@ -18,7 +14,7 @@
          var token = getCookie("Authorization");
          // var el = document.getElementsByName("csrfmiddlewaretoken");
          // csrf_value = el[0].getAttribute("value");
-         var url = "http://127.0.0.1:8000/user/assignedprojects";
+         var url = baseUrl+"user/assignedprojects";
          $.ajax({
              headers: {
                       'Authorization':token,
@@ -57,7 +53,7 @@
 <script type = "text/javascript" >
      $(document).ready(function() {
       $("#saveTask").click(function(event) {
-        var userid=getCookie("user");
+      var userid=getCookie("user");
       var date = $("#datepicker-6").val();
       var billing = $("input[name='is_billing[]']").map(function(){return $(this).val();}).get();
       var project = $("select[name='project[]']").map(function(){return $(this).val();}).get();
@@ -78,7 +74,7 @@
         request = JSON.parse(JSON.stringify(request));
         console.log(request);
 
-        var url = "http://127.0.0.1:8000/task/";
+        var url = baseUrl+"task/";
          $.ajax({
              url: url,
              type: "POST",

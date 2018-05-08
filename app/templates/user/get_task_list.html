@@ -1,15 +1,11 @@
 {% include "header.html" %}
-
-<script>
-   checkCookie();
-</script>
-
+<script type="text/javascript" src="/static/customizedjs/session.js"></script>
 <script type="text/javascript" src="/static/customizedjs/cal_weekly_hours.js"></script>
 <script type="text/javascript">
   $(document).ready(function(event) {
         var token = getCookie("Authorization");
         var userid = getCookie("user");
-        var url = "http://127.0.0.1:8000/task/list/"+userid;
+        var url = baseUrl+"task/list/"+userid;
         $.ajax({
             headers: {
                   'Authorization':token,
@@ -72,7 +68,7 @@
 
 <script>
 function clickMe(e){
-  var url="http://127.0.0.1:8000/task/edittask/"+e.id;
+  var url=baseUrl+"task/edittask/"+e.id;
  // alert("redirecting to "+url+ )
     // alert("You have clicked button id = "+e.id+" and button value = "+document.getElementById(e.id).value);
   window.location=url

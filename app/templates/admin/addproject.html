@@ -1,16 +1,19 @@
 {% include "header.html" %}
 <link rel="stylesheet" href="/static/css/screen.css" />
+<script type="text/javascript" src="/static/customizedjs/session.js"></script>
 <!-- <script type="text/javascript" src="/static/customizedjs/add_new_project.js"></script> -->
+
 <script type="text/javascript">
 	$(document).ready(function() {
 	$("#createprojectform").submit(function(event) {
 			event.preventDefault();
 			var token = getCookie("Authorization");
+			var url = baseUrl+"project/";
 			$.ajax({
 					headers: {
                   			'Authorization':token,
                   	},
-					url: "http://127.0.0.1:8000/project/",
+					url: url,
 					type: "POST",
 					data: {
 							'name': $("#projectname").val(),

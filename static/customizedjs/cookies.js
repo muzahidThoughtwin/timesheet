@@ -21,18 +21,11 @@ function getCookie(cname) {
 	return "";
 }
 
-function checkCookie() {
-
-	var user = getCookie("Authorization");
-	if (user == "") {
-		location.replace("login");
-	}
-}
-
 function deleteAllCookies() {
+	var url = baseUrl+"user/login";
 	setCookie("Authorization", '');
 	setCookie("id", '', 1);
 	setCookie("role", '', 1);
 	setCookie("user", '', 1);
-	window.location = "http://127.0.0.1:8000/user/login";
+	window.location = url;
 }

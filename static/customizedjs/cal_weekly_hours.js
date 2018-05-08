@@ -1,7 +1,7 @@
 
    $(document).ready(function(event) {
     var userid = getCookie("user");
-    var url = "http://127.0.0.1:8000/task/calculate_hours/"+userid;
+    var url = baseUrl+"task/calculate_hours/"+userid;
     var token = getCookie("Authorization");
     $.ajax({
         headers: {

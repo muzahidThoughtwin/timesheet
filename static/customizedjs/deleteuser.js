@@ -3,11 +3,12 @@
                 event.preventDefault();
                 var id = $("#inputid").val();
                 var token = getCookie("Authorization");
+                var url = baseUrl+"user/";
                 $.ajax({
                      headers: {
                         'Authorization':token,
                      },
-                      url: "http://127.0.0.1:8000/user/" + id,
+                      url: url + id,
                       type: "delete",
                       dataType: "json",
                       success: function(response) {

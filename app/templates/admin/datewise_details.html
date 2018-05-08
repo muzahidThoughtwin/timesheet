@@ -1,8 +1,6 @@
 {% include "header.html" %}
-<script>
-	checkCookie();
-</script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="/static/customizedjs/session.js"></script>
 <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="/static/customizedjs/datepicker.js"></script>
@@ -13,17 +11,18 @@
                 $("#userlist").hide(1000);
               $("#datewiseusers").show();
               var token = getCookie("Authorization");
-              var el = document.getElementsByName("csrfmiddlewaretoken");
-              csrf_value = el[0].getAttribute("value");
+              var url = baseUrl+"admin/taskslist";
+              // var el = document.getElementsByName("csrfmiddlewaretoken");
+              // csrf_value = el[0].getAttribute("value");
               $.ajax({
                   headers: {
                       'Authorization':token,
                       },
-                  url: "http://127.0.0.1:8000/admin/taskslist",
+                  url: url,
                   type:"POST",
                      data: {
                      'date': $("#datepicker-6").val(),
-                      'csrfmiddlewaretoken':csrf_value
+                      // 'csrfmiddlewaretoken':csrf_value
                      },
                      dataType: "json",
                      success: function(resp){
@@ -65,11 +64,12 @@
 <script type="text/javascript">
           $(document).ready(function(){
               var token = getCookie("Authorization");
+              var url = baseUrl+ "admin/alluserstasks";
               $.ajax({
                   headers: {
                       'Authorization':token,
                       },
-                  url: "http://127.0.0.1:8000/admin/alluserstasks",
+                  url: url,
                   type:"GET",
                      dataType: "json",
                      success: function(resp){

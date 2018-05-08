@@ -3,15 +3,13 @@ $(document).ready(function() {
         event.preventDefault();
         var nn = $('#test').val();
         alert(nn);
-        var el = document.getElementsByName("csrfmiddlewaretoken");
-        csrf_value = el[0].getAttribute("value");
+        var url = baseUrl+"admin/assignproject";
         $.ajax({
-            url: "http://127.0.0.1:8000/admin/assignproject",
+            url: url,
             type: "POST",
             data: {
                 'project': $("#select1").val(),
                 'user': $("#select2").val(),
-                'csrfmiddlewaretoken': csrf_value
             },
             dataType: "json",
             success: function(response) {

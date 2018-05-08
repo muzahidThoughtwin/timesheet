@@ -1,19 +1,15 @@
 {% include "header.html" %}
-
-<script>
-   checkCookie();
-</script>
-
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="/static/customizedjs/session.js"></script>
 <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="/static/customizedjs/datepicker.js"></script>
    <script type = "text/javascript" >
      $(document).ready(function(event) {
          var userid = getCookie("user");
-         var el = document.getElementsByName("csrfmiddlewaretoken");
-         csrf_value = el[0].getAttribute("value");
-         var url = "http://127.0.0.1:8000/user/dashboard";
+         // var el = document.getElementsByName("csrfmiddlewaretoken");
+         // csrf_value = el[0].getAttribute("value");
+         var url = var url = baseUrl+"user/dashboard";
          var token = getCookie("Authorization");
          $.ajax({
              headers: {
@@ -23,7 +19,7 @@
              type: "POST",
              data: {
                  'userid': userid,
-                 'csrfmiddlewaretoken': csrf_value
+                 // 'csrfmiddlewaretoken': csrf_value
              },
              dataType: "json",
              success: function(response) {

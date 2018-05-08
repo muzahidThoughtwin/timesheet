@@ -1,8 +1,4 @@
 {% include "header.html" %}
-      <script>
-         checkCookie();
-      </script>
-
 <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>  -->
      <script type="text/javascript" src="/static/js/jquery.form.js"></script> 
    <!-- <script type="text/javascript" src="/static/customizedjs/get_details.js"></script> -->
@@ -10,7 +6,7 @@
        $(document).ready(function(event) {
         var userid = getCookie("id");
         var token = getCookie("Authorization");
-        var url = "http://127.0.0.1:8000/admin/" + userid;
+        var url = baseUrl+"admin/" + userid;
         $.ajax({
             url: url,
             type: "GET",
@@ -56,7 +52,7 @@
 $(document).ready(function() {
     var token = getCookie("Authorization");
     var id = getCookie("id");
-    var urls = "http://127.0.0.1:8000/user/" + id;
+    var urls = baseUrl+"user/" + id;
     $('#userdetailform').ajaxForm({ 
         headers: {
                 'Authorization':token,

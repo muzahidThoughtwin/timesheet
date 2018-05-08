@@ -2,11 +2,12 @@ $(document).ready(function() {
 	$("#createprojectform").submit(function(event) {
 			event.preventDefault();
 			var token = getCookie("Authorization");
+			var url = baseUrl+"project/";
 			$.ajax({
 					headers: {
                   			'Authorization':token,
                   	},
-					url: "http://127.0.0.1:8000/project/",
+					url: url,
 					type: "POST",
 					data: {
 							'name': $("#projectname").val(),

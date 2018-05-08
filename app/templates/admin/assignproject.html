@@ -1,17 +1,16 @@
 {% include "header.html" %}
-<script>
-  checkCookie();
-</script>
+  <script type="text/javascript" src="/static/customizedjs/session.js"></script>
   <script type="text/javascript">
   $(document).ready(function(){
        $("#Button2").click(function(event){
         event.preventDefault();
         var token = getCookie("Authorization");
+        var url = baseUrl+"admin/assignprojectdetails";
            $.ajax({
             headers: {
                       'Authorization':token,
                       },
-            url: "http://127.0.0.1:8000/admin/assignprojectdetails",
+            url: url,
             type:"POST",
                data: {
               'project':$("#select1").val(),
@@ -44,11 +43,12 @@
  <script type="text/javascript">
   $(document).ready(function(){
           var token = getCookie("Authorization");
+          var url = baseUrl+"admin/getassignedproject";
            $.ajax({
             headers: {
                       'Authorization':token,
                       },
-            url: "http://127.0.0.1:8000/admin/getassignedproject",
+            url: url,
             type:"GET",
               dataType: "json",
               success: function(response){

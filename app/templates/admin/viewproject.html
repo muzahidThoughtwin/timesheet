@@ -1,14 +1,10 @@
 {% include "header.html" %}
-
-
-<script>
-   checkCookie();
-</script>
+<script type="text/javascript" src="/static/customizedjs/session.js"></script>
 <!-- <script type="text/javascript" src="/static/customizedjs/view_project.js"></script> -->
 <script type="text/javascript">
    
-    $(document).ready(function(event) {      
-        var url = "http://127.0.0.1:8000/admin/viewuserprojects";
+    $(document).ready(function(event) { 
+        var url = baseUrl+"admin/viewuserprojects";    
         var token = getCookie("Authorization");
         $.ajax({
             headers: {

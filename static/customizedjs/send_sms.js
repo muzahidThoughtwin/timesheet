@@ -1,6 +1,7 @@
 $(document).ready(function() {
-$("#Button2").click(function(event) {
+	$("#Button2").click(function(event) {
 		event.preventDefault();
+		var url = baseUrl+"admin/sendsms";
 		var token = getCookie("Authorization");
 		var username = $("#Username").val();
 		var password = $("#Password").val();
@@ -20,7 +21,7 @@ $("#Button2").click(function(event) {
 				headers: {
                   'Authorization':token,
                 },
-				url: "http://127.0.0.1:8000/admin/sendsms",
+				url: url,
 				type: "POST",
 				data: {
 						'username': username,
