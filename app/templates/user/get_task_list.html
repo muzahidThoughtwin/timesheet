@@ -7,9 +7,13 @@
 <script type="text/javascript" src="/static/customizedjs/cal_weekly_hours.js"></script>
 <script type="text/javascript">
   $(document).ready(function(event) {
+        var token = getCookie("Authorization");
         var userid = getCookie("user");
         var url = "http://127.0.0.1:8000/task/list/"+userid;
         $.ajax({
+            headers: {
+                  'Authorization':token,
+                  },
             url: url,
             type: "GET",
             dataType: "json",

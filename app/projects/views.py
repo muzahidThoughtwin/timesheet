@@ -1,3 +1,6 @@
+from django.contrib.auth import authenticate
+from rest_framework.decorators import authentication_classes, permission_classes
+# from app.users.permissions import IsAuthenticatedOrCreate
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -24,7 +27,7 @@ class ProjectView(APIView):
 			return Response("Error")
 
 
-	def get(self,request,id):
+	def get(self,request):
 		try:
 			# if(project_id):
 			# 	get_project_data = UserProfile.objects.get(pk=project_id)
@@ -37,15 +40,15 @@ class ProjectView(APIView):
 			print(err) 
 			return Response("Error")
 
-	def put(self,request,project_id):
-		try:
+	# def put(self,request,project_id):
+	# 	try:
 			
-			get_data = Projects.objects.get(pk=project_id)
-			update_data = ProjectSerializer(get_data,data=request.data)
-			print(update_data)
-			if update_data.is_valid():
-				update_data.save()
-				return Response(update_data.data)
-		except:
-			return Response("Error")
+	# 		get_data = Projects.objects.get(pk=project_id)
+	# 		update_data = ProjectSerializer(get_data,data=request.data)
+	# 		print(update_data)
+	# 		if update_data.is_valid():
+	# 			update_data.save()
+	# 			return Response(update_data.data)
+	# 	except:
+	# 		return Response("Error")
 

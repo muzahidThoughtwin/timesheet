@@ -12,9 +12,13 @@
               event.preventDefault();
                 $("#userlist").hide(1000);
               $("#datewiseusers").show();
+              var token = getCookie("Authorization");
               var el = document.getElementsByName("csrfmiddlewaretoken");
               csrf_value = el[0].getAttribute("value");
               $.ajax({
+                  headers: {
+                      'Authorization':token,
+                      },
                   url: "http://127.0.0.1:8000/admin/taskslist",
                   type:"POST",
                      data: {
@@ -60,7 +64,11 @@
 
 <script type="text/javascript">
           $(document).ready(function(){
+              var token = getCookie("Authorization");
               $.ajax({
+                  headers: {
+                      'Authorization':token,
+                      },
                   url: "http://127.0.0.1:8000/admin/alluserstasks",
                   type:"GET",
                      dataType: "json",

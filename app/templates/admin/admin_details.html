@@ -9,14 +9,13 @@
    <script type="text/javascript">
        $(document).ready(function(event) {
         var userid = getCookie("id");
-        var token = getCookie("Authorization")
-        alert('token')
+        var token = getCookie("Authorization");
         var url = "http://127.0.0.1:8000/admin/" + userid;
         $.ajax({
             url: url,
             type: "GET",
             dataType: "json",
-             headers: {
+              headers: {
                       'Authorization':token,
                       
                       },
@@ -54,10 +53,14 @@
 
 <!-- <script type="text/javascript" src="/static/customizedjs/edit_details.js"></script> -->
 <script type="text/javascript">
-$(document).ready(function() { 
+$(document).ready(function() {
+    var token = getCookie("Authorization");
     var id = getCookie("id");
     var urls = "http://127.0.0.1:8000/user/" + id;
     $('#userdetailform').ajaxForm({ 
+        headers: {
+                'Authorization':token,
+                },
         url : urls,
         type: "put",
         data:{
@@ -92,8 +95,12 @@ $(document).ready(function() {
 }
 </script>
 <script type="text/javascript">
-          $(document).ready(function(){   
+          $(document).ready(function(){ 
+              var token = getCookie("Authorization");  
               $.ajax({
+                  headers: {
+                      'Authorization':token,
+                    },
                   url: "https://api.forismatic.com/api/1.0/?method=getQuote&key=457653&format=jsonp&lang=en&jsonp=?",
                   type:"GET",
                      dataType: "json",

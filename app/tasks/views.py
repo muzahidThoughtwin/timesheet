@@ -1,3 +1,5 @@
+# from django.contrib.auth import authenticate
+# from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -23,9 +25,9 @@ class TaskView(APIView):
 	# 	try:
 	# 		print(request.data)
 	# 		if "data" in kwargs:
- #        		data = kwargs["data"]
- #        		if isinstance(data, list):
- #            		kwargs["many"] = True
+ 	#        	data = kwargs["data"]
+ 	#        	if isinstance(data, list):
+ 	#            	kwargs["many"] = True
 	# 		user = request.POST.get('user')
 	# 		project = request.POST.get('project[1]')
 	# 		task_data = TaskSerializer(data=request.data)
@@ -41,9 +43,7 @@ class TaskView(APIView):
 		
 		task_data = Tasks.objects.all()
 		return task_data
-		# task_value = TaskSerializer(task_data, many=True)
-		# return Response(task_value.data,status=status.HTTP_200_OK)
-
+		
 	def post(self,request):
 		try:
 			task_created = []
@@ -58,48 +58,6 @@ class TaskView(APIView):
 		except Exception as err:
 			print(err)
 			return Response("Error")
-
-		
-##Written By Ashwin
-# class EditTask(APIView):
-# 	def get(self,request,user_id=None):
-# 		try:
-# 			# import pdb;pdb.set_trace();
-# 			id_list = []
-# 			data_list=[]
-# 			if(user_id):
-# 				get_data = Tasks.objects.get(pk=user_id)
-# 				task_data = TaskSerializer(get_data)
-# 				task_dict = task_data.data
-# 				project_id = task_dict['project'].split(',')
-# 				project_ids =list(map(int,project_id))
-# 				get_project_data = Projects.objects.all()
-# 				project_data = ProjectSerializer(get_project_data,many=True)
-# 				date_value = project_data.data
-# 				for index in date_value:
-# 					list_value = index.items()
-# 					dict_data = dict(list_value)
-# 					data_list.append(dict_data['id'])
-# 				for index in project_ids:
-# 					if index in data_list:
-# 						id_list.append(index)
-# 						task_dict['project']=id_list
-# 						user_task_edit = {"usertasks":task_dict}
-# 				return render(request,'edit_each_task.html',user_task_edit)				
-# 		except:
-# 			return Response("Error")
-# 		return render(request,'get_task_list.html')
-
-	# def put(self,request,user_id):
-	# 	try:
-	# 		get_data = Tasks.objects.get(pk=user_id)
-	# 		user_tasks = TaskSerializer(get_data,data=request.data)
-	# 		if user_tasks.is_valid():
-	# 			user_tasks.save()
-	# 			return Response(user_tasks.data,status=status.HTTP_200_OK)
-	# 	except:
-	# 		return Response("Error",status=status.HTTP_400_BAD_REQUEST)
-
 
 ## written by aarti
 class UserTaskDatewise(APIView):

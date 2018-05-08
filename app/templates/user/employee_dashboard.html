@@ -15,10 +15,14 @@
     <script type = "text/javascript" >
      $(document).ready(function(event) {
          var userid = getCookie("user");
+         var token = getCookie("Authorization");
          // var el = document.getElementsByName("csrfmiddlewaretoken");
          // csrf_value = el[0].getAttribute("value");
          var url = "http://127.0.0.1:8000/user/assignedprojects";
          $.ajax({
+             headers: {
+                      'Authorization':token,
+                      },
              url: url,
              type: "POST",
              data: {
@@ -100,7 +104,7 @@
 $(document).ready(function() { 
     datee=$("#datepicker-6").val();
     var de=$("#billing_description").val();
-
+    var token = getCookie("Authorization");
     var urls = "http://127.0.0.1:8000/task/";
     // for(i=0;i<=2;i++){
           data = {
@@ -114,12 +118,14 @@ $(document).ready(function() {
       
   // }
     $('#billing_form').ajaxForm({ 
-
+        headers: {
+                  'Authorization':token,
+                  },
         url : urls,
         type: "post",
-        data:data,
-        dataType:  'json',
-        success:   processJson 
+        data: data,
+        dataType: 'json',
+        success: processJson 
     });
     
 });

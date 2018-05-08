@@ -6,15 +6,16 @@
   $(document).ready(function(){
        $("#Button2").click(function(event){
         event.preventDefault();
-        var el = document.getElementsByName("csrfmiddlewaretoken");
-        csrf_value = el[0].getAttribute("value");
+        var token = getCookie("Authorization");
            $.ajax({
+            headers: {
+                      'Authorization':token,
+                      },
             url: "http://127.0.0.1:8000/admin/assignprojectdetails",
             type:"POST",
                data: {
               'project':$("#select1").val(),
               'user'   :$("#select2").val(),
-                'csrfmiddlewaretoken':csrf_value
                },
               dataType: "json",
               success: function(response){
@@ -42,7 +43,11 @@
 </script>
  <script type="text/javascript">
   $(document).ready(function(){
+          var token = getCookie("Authorization");
            $.ajax({
+            headers: {
+                      'Authorization':token,
+                      },
             url: "http://127.0.0.1:8000/admin/getassignedproject",
             type:"GET",
               dataType: "json",

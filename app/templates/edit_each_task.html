@@ -14,7 +14,11 @@
          var el = document.getElementsByName("csrfmiddlewaretoken");
          csrf_value = el[0].getAttribute("value");
          var url = "http://127.0.0.1:8000/user/dashboard";
+         var token = getCookie("Authorization");
          $.ajax({
+             headers: {
+                'Authorization':token,
+                },
              url: url,
              type: "POST",
              data: {

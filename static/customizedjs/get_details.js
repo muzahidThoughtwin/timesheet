@@ -1,7 +1,11 @@
 $(document).ready(function(event) {
 	 var userid = getCookie("id");
 	 var url = "http://127.0.0.1:8000/user/" + userid;
+	 var token = getCookie("Authorization");
 	 $.ajax({
+	 	 headers: {
+               'Authorization':token,
+            },
 		 url: url,
 		 type: "GET",
 		 dataType: "json",

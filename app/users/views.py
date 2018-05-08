@@ -1,3 +1,6 @@
+from django.contrib.auth import authenticate
+from rest_framework.decorators import authentication_classes, permission_classes
+from app.users.permissions import IsAuthenticatedOrCreate
 from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework import status
@@ -27,7 +30,7 @@ import zerosms
 
 ## written by aarti
 class UserProfileList(APIView):
-	
+	permission_classes = (IsAuthenticatedOrCreate, )
 	def post(self,request):
 		try:
 			user = self.create_user(request)
@@ -106,20 +109,31 @@ class UserProfileList(APIView):
 		delete_user.delete()
 		return Response("Deleted",status=status.HTTP_200_OK)
 
-## written by aarti
-class Login(TemplateView):
+class LoginView(TemplateView):
 	
 	def get(self,request):
 		return render(request,'login.html')
 
+## written by aarti
+class Login(APIView):
+	permission_classes = (IsAuthenticatedOrCreate, )
 	def post(self,request,*args, **kwargs):
 		try:
+			# import pdb;pdb.set_trace();
 			email = request.POST.get('inputEmail')
 			password = request.POST.get('inputPassword')
 			if email:
 				user = User.objects.get(username=email)
-				auth_user = authenticate(username=email, password=password)
-				print(auth_user)
+				try:
+					# email = request.POST.get('inputEmail')
+					# password = request.POST.get('inputPassword')
+					auth_user = authenticate(username=email, password=password)
+					print("auth_user")
+				except Exception as err:
+					print(err)
+					return Response('username or password incorrect')
+				if not(auth_user):
+					return Response('username or password incorrect')
 				token,created = Token.objects.get_or_create(user_id=user.id)
 				print(token)
 				if(user):
@@ -128,26 +142,15 @@ class Login(TemplateView):
 				else:
 					userData = UserProfile.objects.all()
 					user_data = UserSerializer(userData,many=True)
-
 				token_value = {
 					'token':token.key,
 					}
-				
 				user_response = user_data.data
 				user_response.update(token_value)
 				return JsonResponse(user_response)
-
 		except Exception as e:
 			print(e)
 			return JsonResponse({'Error':'error'})
-
-
-class UserAssignedProject(APIView):
- 	def post(self,request,user_id=None):
- 		userData = UserProjects.objects.all()
- 		user_data = UserProjectSerializer(userData, many=True)
- 		return JsonResponse({"tt":user_data.data})
-
 					
 class WorkDetails(APIView):
 	##Written By Ashwin
@@ -168,6 +171,7 @@ class AssignProjectApi(APIView):
 		try:
 			project_id = request.POST.get('project')	
 			user_id = request.POST.get('user')
+			print("project_id,user_id")
 			user_data = UserProjectSerializer(data=request.data)
 			if not(user_data.is_valid()):
 				return Response(user_data.errors)
@@ -176,6 +180,11 @@ class AssignProjectApi(APIView):
 		except Exception as e:
 			print(e)
 			return Response("Error in assigning project")
+
+class AssignProjectTest(TemplateView):
+	def get(self,request):
+		print("hdsfgdus")
+		return render(request,'admin/assignproject.html')
 
 ##Written By Ashwin
 class UserTaskDetails(TemplateView):
@@ -239,7 +248,7 @@ class UserAssignedProject(APIView):
 
 class SendSmsTemplate(TemplateView):
 	def get(self,request):
-		return render(request,"send_sms.html")
+		return render(request,"admin/send_sms.html")
 
 class UserDetail(TemplateView):
 	def get(self,request):

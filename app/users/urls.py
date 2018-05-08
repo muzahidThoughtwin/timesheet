@@ -5,7 +5,8 @@ from . import views
 app_name='users'
 
 urlpatterns = [
-	url(r'^user/login$',views.Login.as_view(),name='login'),
+	url(r'^user/login$',views.LoginView.as_view(),name='login'),
+	url(r'^login$',views.Login.as_view(),name='login'),
 	url(r'^user/dashboard$',views.Dashboard.as_view()),
 	url(r'^user/assignedprojects$', views.UserAssignedProject.as_view()),
 	url(r'^user/editprofile$',views.UserDetail.as_view()),
@@ -27,6 +28,8 @@ urlpatterns = [
 	url(r'^admin/deleteuser$',views.DeleteUser.as_view()),
 	url(r'^sendmail/(?P<user_id>[0-9]+)$',views.SendMail.as_view()),
 	url(r'^admin/sendsms$',views.SendSmsTemplate.as_view()),
+
+	url(r'^admin/assigndemo$',views.AssignProjectTest.as_view()),
 	url(r'',views.UserProfileList.as_view()),
 
 	# url(r'^api/$', views.home),

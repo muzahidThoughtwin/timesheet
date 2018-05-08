@@ -1,4 +1,4 @@
-$(document).ready(function() {
+ $(document).ready(function() {
 	// $("#userdetailform").submit(function(event){
 	// event.preventDefault();
 	if(!getCookie("role") == 1){

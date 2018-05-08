@@ -1,12 +1,7 @@
  $(document).ready(function(){
              $("#adduserform").submit(function(event){
               event.preventDefault();
-                var token = getCookie("Authorization")
                  $.ajax({
-                  headers: {
-                      'Authorization':token,
-                      
-                      },
                   url: "http://127.0.0.1:8000/admin/",
                   type:"POST",
                      data: {
