@@ -54,42 +54,57 @@
      }); 
    </script>
 
-<!-- <script type = "text/javascript" >
+<script type = "text/javascript" >
      $(document).ready(function() {
-      $("#btn1").click(function(event) {
-        event.preventDefault();
-         var userid = getCookie("user");
-         var el = document.getElementsByTagName('description')[0];
+      $("#saveTask").click(function(event) {
+        var userid=getCookie("user");
+      var date = $("#datepicker-6").val();
+      var billing = $("input[name='is_billing[]']").map(function(){return $(this).val();}).get();
+      var project = $("select[name='project[]']").map(function(){return $(this).val();}).get();
+      var desc= $("textarea[name='description[]']").map(function(){return $(this).val();}).get();
+      var hour= $("input[name='hours[]']").map(function(){return $(this).val();}).get();
+      request =  [];
+      for(i=0;i<project.length;i++){
+        req =  {};
+        req.date = date;  
+        req.billing = billing[i];  
+        req.project = project[i];  
+        req.description = desc[i];  
+        req.hours = hour[i];  
+        req.user = userid;  
+        request.push(req);
+      }
 
+        request = JSON.parse(JSON.stringify(request));
+        console.log(request);
 
-         // alert(el)
-         // for(i=0;i<3;i++){
-          var data = {
-                 'userid': userid,
-                 'projectid':$("#select1").val(),
-                 'description':el,
-                 'is_billing':$("#is_billing").val(),
-                 'date':"1212/12/12",
-           
-           }
-         // }
-         var url = "http://127.0.0.1:8000/task/";
+        var url = "http://127.0.0.1:8000/task/";
          $.ajax({
              url: url,
              type: "POST",
-             data: data,
-             dataType: "json",
+             data: request,
+             dataType: 'json',
+           // beforeSend: function(x) {
+           //    console.log('11111111111111111111111111111111111111111111');
+           //    console.log(x);
+           //    console.log('11111111111111111111111111111111111111111111');
+           //    // if (x && x.overrideMimeType) {
+           //    //   x.overrideMimeType("application/j-son;charset=UTF-8");
+           //    // }
+           //  },
              success: function(response) {
+              alert('we are here');
               console.log(response)
                 
              },
              error: function(err) {
+              alert('error');
                  return false;
              }
          });
      }); 
     }); 
-   </script> -->
+   </script>
 
 <script type="text/javascript">
   $(function(){
@@ -100,41 +115,8 @@
 })
 </script>
 
-<script type="text/javascript">
-$(document).ready(function() { 
-    datee=$("#datepicker-6").val();
-    var de=$("#billing_description").val();
-    var token = getCookie("Authorization");
-    var urls = "http://127.0.0.1:8000/task/";
-    // for(i=0;i<=2;i++){
-          data = {
 
-          'date' : '2018-05-03',
-          'user': getCookie("user"),
-          'description':$("#description").val(),
 
-          }
-          console.log(data),
-      
-  // }
-    $('#billing_form').ajaxForm({ 
-        headers: {
-                  'Authorization':token,
-                  },
-        url : urls,
-        type: "post",
-        data: data,
-        dataType: 'json',
-        success: processJson 
-    });
-    
-});
-</script>
-<script type="text/javascript">
-  function processJson(data) { 
-    console.log(data);
-}
-</script>
 
 <style>
 .ui-datepicker-trigger { 
@@ -253,22 +235,22 @@ $(document).ready(function() {
 <tbody>
   <tr>
     <th>Project Name</th>
-    <td><select class="select1" id="select1" name="project">
+    <td><select class="select1" id="select1[]" name="project[]">
     <option value="0">Select Project</option>
     </select><br></td>
       </tr>
       <tr>
         <th>Description</th>
-        <td><textarea rows="2" cols="75" placeholder="Description" id="description" name="description"></textarea></td>
+        <td><textarea rows="2" cols="75" placeholder="Description" id="description" name="description[]"></textarea></td>
       </tr>
       <tr>
         <th>Time (Hours)</th>
-        <td><input type="time" name="hours" max="8" id="hours">  [ hh:mm ]</td>
+        <td><input type="time" name="hours[]" max="8" id="hours">  [ hh:mm ]</td>
       </tr>
     </tbody>
 
   
-<input type="text" name="is_billing" id="is_billing" value="true" hidden="">
+<input type="text" name="is_billing[]" id="is_billing" value="true" >
   </table>
   <button class="btn btn-primary btn-copy" type="button">Add More...</button>
 <br>
@@ -286,24 +268,24 @@ $(document).ready(function() {
 <tbody>
   <tr>
     <th>Project Name</th>
-    <td><select class="select1" id="select1" name="project">
+    <td><select class="select1" id="select1[]" name="project[]">
         <option value="0">Select Project</option>
     </select></td>
       </tr>
       <tr>
         <th>Description</th>
-        <td><textarea rows="2" cols="75" placeholder="Description" id="description" name="description"></textarea></td>
+        <td><textarea rows="5" cols="75" placeholder="Description" id="description" name="description[]"></textarea></td>
       </tr>
       <tr>
         <th>Time (Hours)</th>
-        <td><input type="time" name="hours" id="hour">  [ hh:mm ]</td>
+        <td><input type="time" name="hours[]" id="hours">  [ hh:mm ]</td>
       </tr>
     </tbody>
 
   
-<input type="text" name="is_billing" value="false" hidden="">
+<input type="text" name="is_billing[]" id="is_billing" value="false" >
   </table>
-  <button class="center" id="btn1" type="Submit">Submit</button>
+  <button class="center" id="saveTask" type="button">Submit</button>
     </form>
 </div>
 

@@ -33,6 +33,7 @@ class UserProfileList(APIView):
 	permission_classes = (IsAuthenticatedOrCreate, )
 	def post(self,request):
 		try:
+			print("ji")
 			user = self.create_user(request)
 			if not(user):
 				return Response("Error while create user")
