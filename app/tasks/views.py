@@ -1,5 +1,6 @@
 # from django.contrib.auth import authenticate
 # from rest_framework.decorators import authentication_classes, permission_classes
+# from app.users.permissions import IsAuthenticatedOrCreate
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -19,30 +20,19 @@ from datetime import datetime, timedelta
 
 ## written by aarti
 class TaskView(APIView):
-
-
-	# def post(self,request,**kwargs):
-	# 	try:
-	# 		print(request.data)
-	# 		if "data" in kwargs:
- 	#        	data = kwargs["data"]
- 	#        	if isinstance(data, list):
- 	#            	kwargs["many"] = True
-	# 		user = request.POST.get('user')
-	# 		project = request.POST.get('project[1]')
-	# 		task_data = TaskSerializer(data=request.data)
-	# 		if not(task_data.is_valid()):
-	# 			return Response(task_data.errors)
-	# 		task_data.save()
-	# 		return Response(task_data.data,status=status.HTTP_201_CREATED)
-	# 	except Exception as err:
-	# 		print(err)
-			# return Response("Error")
-
-	def get(self,request):
-		
+	# permission_classes = (IsAuthenticatedOrCreate,)
+	def get(self,request,user_id=None):
+		# if(user_id):
+		# 	userprofile = UserProfile.objects.get(pk=user_id)
+		# 	user_data = UserSerializer(userprofile)
+		# else:
 		task_data = Tasks.objects.all()
-		return task_data
+		get_data = TaskSerializer(userData, many=True)
+		return Response(get_data.data,status=status.HTTP_200_OK)
+	# def get(self,request):
+		
+	# 	task_data = Tasks.objects.all()
+	# 	return task_data
 		
 	def post(self,request):
 		try:
@@ -58,6 +48,17 @@ class TaskView(APIView):
 		except Exception as err:
 			print(err)
 			return Response("Error")
+
+	def put(self,request,task_id):
+		try:
+			get_data = Tasks.objects.get(pk=task_id)
+			update_data = TaskSerializer(get_data,data=request.data)
+			if update_data.is_valid():
+				update_data.save()
+				return Response(update_data.data)
+		except:
+			return Response("Error" ,status=status.HTTP_400_BAD_REQUEST)
+
 
 ## written by aarti
 class UserTaskDatewise(APIView):
