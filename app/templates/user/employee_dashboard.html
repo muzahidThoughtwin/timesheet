@@ -4,327 +4,306 @@
 <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript" src="/static/customizedjs/datepicker.js"></script>
-<!-- <script type="text/javascript" src="/static/customizedjs/cal_weekly_hours.js"></script> -->
+<!-- <script type="text/javascript" src="/static/customizedjs/employee.js"></script> -->
 <script type="text/javascript" src="/static/js/jquery.form.js"></script> 
-
-    <script type = "text/javascript" >
-     $(document).ready(function(event) {
-         var userid = getCookie("user");
-         var token = getCookie("Authorization");
-         // var el = document.getElementsByName("csrfmiddlewaretoken");
-         // csrf_value = el[0].getAttribute("value");
-         var url = baseUrl+"user/assignedprojects";
+<script type = "text/javascript" >
+   $(document).ready(function(event) {
+       var userid = getCookie("user");
+       var url = baseUrl+"user/assignedprojects";
+       var token=getCookie("Authorization");
          $.ajax({
              headers: {
                       'Authorization':token,
                       },
              url: url,
-             type: "POST",
-             data: {
-                 'userid': userid,
-             },
-             dataType: "json",
-             success: function(response) {
-              // console.log(response)
-                 var len = response.length;
-                 $("#select1").empty();
-                 $("#select2").empty();
-                 var pname = "Select Project";
-                 var nonpname = "Thoughtwin | R & D";
-                 $("#select1").append("<option value='0'>" + pname + "</option>");
-                 $("#select2").append("<option value='0'>" + nonpname + "</option>");
-                 for (i = 0; i < len; i++) {
-                     if (response[i].user == userid) {
-                         var projectid = response[i].project;
-                         var name = response[i].project_name;
-                         $(".select1").append("<option value='" + projectid + "'>" + name + "</option>");
-                         // $(".select1").append("<option value='" + projectid + "'>" + name + "</option>");
-                     }
-                 };
-             },
-             error: function(err) {
-                 return false;
-             }
-         });
-     }); 
-   </script>
-
-<script type = "text/javascript" >
-     $(document).ready(function() {
-      $("#saveTask").click(function(event) {
-      var userid=getCookie("user");
-      var date = $("#datepicker-6").val();
-      var billing = $("input[name='is_billing[]']").map(function(){return $(this).val();}).get();
-      var project = $("select[name='project[]']").map(function(){return $(this).val();}).get();
-      var desc= $("textarea[name='description[]']").map(function(){return $(this).val();}).get();
-      var hour= $("input[name='hours[]']").map(function(){return $(this).val();}).get();
-      request =  [];
-      for(i=0;i<project.length;i++){
-        req =  {};
-        req.date = date;  
-        req.billing = billing[i];  
-        req.project = project[i];  
-        req.description = desc[i];  
-        req.hours = hour[i];  
-        req.user = userid;  
-        request.push(req);
-      }
-
-        request = JSON.parse(JSON.stringify(request));
-        console.log(request);
-
-        var url = baseUrl+"task/";
-         $.ajax({
-             url: url,
-             type: "POST",
-             data: request,
-             dataType: 'json',
-           // beforeSend: function(x) {
-           //    console.log('11111111111111111111111111111111111111111111');
-           //    console.log(x);
-           //    console.log('11111111111111111111111111111111111111111111');
-           //    // if (x && x.overrideMimeType) {
-           //    //   x.overrideMimeType("application/j-son;charset=UTF-8");
-           //    // }
-           //  },
-             success: function(response) {
-              alert('we are here');
-              console.log(response)
-                
-             },
-             error: function(err) {
-              alert('error');
-                 return false;
-             }
-         });
-     }); 
-    }); 
-   </script>
-
-<script type="text/javascript">
-  $(function(){
-  $(".btn-copy").on('click', function(){
-    var element = $(this).closest('.more').clone(true);
-    $(this).closest('.more').after(element);
-  })
-})
+           type: "POST",
+           data: {
+               'userid': userid,
+           },
+           dataType: "json",
+           success: function(response) {
+            
+               var len = response.length;
+               $("#select1").empty();
+               var pname = "Select Project";
+               $("#select1").append("<option value='0'>" + pname + "</option>");
+               for (i = 0; i < len; i++) {
+                   if (response[i].user == userid) {
+                       var projectid = response[i].project;
+                       var name = response[i].project_name;
+                       $(".select1").append("<option value='" + projectid + "'>" + name + "</option>");
+                   }
+               };
+           },
+           error: function(err) {
+               return false;
+           }
+       });
+   }); 
 </script>
-
-
-
-
+<script type = "text/javascript" >
+   $(document).ready(function() {
+    $("#saveTask").click(function(event) {
+   
+   var url = baseUrl+"task/";
+   var formsCollection = document.getElementsByTagName('form');
+   console.log(formsCollection);
+   for(var i=0;i<formsCollection.length;i++)
+   {
+   var datastring = $("#"+ formsCollection[i].id).serialize();
+   var userid=getCookie("user");
+   var date = $("#datepicker-6").val();
+   var newdata = datastring+"&user="+userid+"&date="+date;
+   console.log(newdata);
+   $.ajax({
+       headers: {
+                'Authorization':token,
+                },
+       url: url,
+     type: "POST",
+     dataType: 'json',
+     data: newdata,
+     success: function(response) {
+      console.log(response)
+     },
+     error: function(err) {
+      alert('error');
+         return false;
+     }
+   });
+   }
+   }); 
+   }); 
+</script>
+<script type="text/javascript">
+   $(document).ready(function() {
+     var max_fields      = 10; 
+     var wrapper         = $(".input_fields_wrap"); //Fields wrapper
+     var add_button      = $(".btn-copy"); //Add button ID
+     var add_non_bill    = $(".btn-copy2");
+     
+     var x = 1; //initlal text box count
+     $(add_button).click(function(e){ //on add input button click
+         var rand  = Math.floor(Math.random()*10) + 1;
+         e.preventDefault();
+         if(x < max_fields){ //max input box allowed
+             x++; //text box increment
+             $(wrapper).append('<div><form id="billing_form"'+rand+'" class="remove_field1" name="billing_form"><br><table class="table table-bordered"><tbody><tr>    <th>Project Name</th><td><select class="select1'+rand+'" id="select1" name="project"><option value="0">Select Project</option></select><br></td></tr><tr><th>Description</th><td><textarea rows="2" cols="75" placeholder="Description" id="description" name="description"></textarea></td></tr><tr><th>Time (Hours)</th><td><input type="time" name="hours" max="8" id="hours">  [ hh:mm ]</td></tr></tbody><input type="text" name="is_billing" id="is_billing" value="true" ></table></form><a href="#" class="remove_field btn btn-sm btn-danger">Remove</a></div>'); //add input box
+         }
+          var userid = getCookie("user");
+          var url = baseUrl+"user/assignedprojects";
+   
+           $.ajax({
+               headers: {
+                        'Authorization':token,
+                        },
+               url: url,
+              type: "POST",
+              data: {
+                  'userid': userid,
+              },
+              dataType: "json",
+              success: function(response) {
+               // console.log(response)
+                  var len = response.length;
+                  $("#select1").empty();
+                  var pname = "Select Project";
+                  $("#select1").append("<option value='0'>" + pname + "</option>");
+                  for (i = 0; i < len; i++) {
+                      if (response[i].user == userid) {
+                          var projectid = response[i].project;
+                          var name = response[i].project_name;
+                          $(".select1"+rand).append("<option value='" + projectid + "'>" + name + "</option>");
+                          $(".select1").append("<option value='" + projectid + "'>" + name + "</option>");
+                      }
+                  };
+              },
+              error: function(err) {
+                  return false;
+              }
+          });
+   
+   
+     });
+     
+     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
+         e.preventDefault(); $(this).parent('div').remove(); x--;
+     })
+   });
+</script>
 <style>
-.ui-datepicker-trigger { 
-    position:relative;
-    right:30px ; 
-    height:25px }
+   .ui-datepicker-trigger { 
+   position:relative;
+   right:30px ; 
+   height:25px }
 </style>
-
 </head>
 <body>
-    <div class="wrapper">
-        <div class="sidebar" data-image="/static/img/sidebar-4.jpg">
-            <!--
-        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+   <div class="wrapper">
+   <div class="sidebar" data-image="/static/img/sidebar-4.jpg">
+      <!--
+         Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+         
+         Tip 2: you can also add an image using data-image tag
+         -->
+      <div class="sidebar-wrapper">
+         <div class="logo">
+            <a href="http://www.thoughtwin.com" class="simple-text">
+            Thoughtwin
+            </a>
+         </div>
+         <ul class="nav">
+            <li  class="nav-item active">
+               <a class="nav-link" href="/user/dashboard">
+                  <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                  <p>Dashboard</p>
+               </a>
+            </li>
+            <li>
+               <a class="nav-link" href="/user/editprofile">
+                  <i class="fa fa-user fa" aria-hidden="true"></i>
+                  <p>User Profile</p>
+               </a>
+            </li>
+            <li>
+               <a class="nav-link" href="tasks">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  <p>Task List</p>
+               </a>
+            </li>
+         </ul>
+      </div>
+   </div>
+   <div class="main-panel">
+      <!-- fixed plugin  -->
+      <div class="fixed-plugin">
+      </div>
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+         <div class=" container-fluid  ">
+            <a class="navbar-brand" href="/user/dashboard">My Dashboard </a>
+            <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-bar burger-lines"></span>
+            <span class="navbar-toggler-bar burger-lines"></span>
+            <span class="navbar-toggler-bar burger-lines"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+               <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                     <a class="nav-link">
+                     <span class="no-icon" id="billhrs">Billing</span>&nbsp;Billing Hrs&nbsp;/&nbsp;
+                     <span class="no-icon" id="nonbillhrs">NonBilling</span>&nbsp;Non-Billing Hrs
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" onclick="deleteAllCookies()">
+                     <span class="no-icon">Log out</span>
+                     </a>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </nav>
+      <!-- End Navbar -->
+      <div class="alert alert-success" style="position: fixed;top:30px;left: 35%;height: 40px;width: 300px;color: black;border-radius: 10px; text-align: center;display: none;">
+         Submitted Successfully!
+      </div>
+      <div class="content">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="col-md-12">
+               </div>
+               <div class="col-md-12">
+                  <b>Enter Date: <input type = "text" id = "datepicker-6"></b>
+                  <br><br>
+                  <div class="card card-plain table-plain-bg">
+                     <div class="card-header ">
+                        <div id="Billing">
+                           <h4 class="card-title">Billing Hours</h4>
+                           <div class="container">
+                              <br><br>
+                              <div class="input_fields_wrap">
+                                 <!-- <button class="add_field_button"></button> -->
+                                 <div>
+                                    <form id="billing_form" class="" name="billing_form">
+                                       <br>
+                                       <table class="table table-bordered">
+                                          <tbody>
+                                             <tr>
+                                                <th>Project Name</th>
+                                                <td>
+                                                   <select class="select1" id="select1" name="project">
+                                                      <option value="0">Select Project</option>
+                                                   </select>
+                                                   <br>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <th>Description</th>
+                                                <td><textarea rows="2" cols="75" placeholder="Description" id="description" name="description"></textarea></td>
+                                             </tr>
+                                             <tr>
+                                                <th>Time (Hours)</th>
+                                                <td><input type="time" name="hours" max="8" id="hours">  [ hh:mm ]</td>
+                                             </tr>
+                                          </tbody>
+                                          <input type="text" name="is_billing" id="is_billing" value="true" >
+                                       </table>
+                                       
+                                    </form>
+                                 </div>
+                              </div>
 
-        Tip 2: you can also add an image using data-image tag
-    -->
-            <div class="sidebar-wrapper">
-                <div class="logo">
-                    <a href="http://www.thoughtwin.com" class="simple-text">
-                        Thoughtwin
-                    </a>
-                </div>
-                <ul class="nav">
-                    <li  class="nav-item active">
-                        <a class="nav-link" href="/user/dashboard">  
-                           <i class="fa fa-pie-chart" aria-hidden="true"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/user/editprofile">
-                            <i class="fa fa-user fa" aria-hidden="true"></i>
-                            <p>User Profile</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="tasks">
-                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <p>Task List</p>
-                        </a>
-                    </li>
-                    
-                   
-                   
-                </ul>
-            </div>
-        </div>
-        <div class="main-panel">
-            <!-- fixed plugin  -->
-            <div class="fixed-plugin">
-                
-            </div>
-            <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
-                <div class=" container-fluid  ">
-                    <a class="navbar-brand" href="/user/dashboard">My Dashboard </a>
-                    <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class="navbar-toggler-bar burger-lines"></span>
-                  <span class="navbar-toggler-bar burger-lines"></span>
-                  <span class="navbar-toggler-bar burger-lines"></span>
-                  </button>
-                    
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        
-                        <ul class="navbar-nav ml-auto">
-                           <li class="nav-item">
-                                <a class="nav-link">
-                                    <span class="no-icon" id="billhrs">Billing</span>&nbsp;Billing Hrs&nbsp;/&nbsp;
-                                    <span class="no-icon" id="nonbillhrs">NonBilling</span>&nbsp;Non-Billing Hrs
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" onclick="deleteAllCookies()">
-                                    <span class="no-icon">Log out</span>
-                                </a>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-            <!-- End Navbar -->
-            <div class="alert alert-success" style="position: fixed;top:30px;left: 35%;height: 40px;width: 300px;color: black;border-radius: 10px; text-align: center;display: none;">
-               Submitted Successfully!
+                              <br>
+                              <button class="btn btn-primary btn-copy" type="button">Add More Billing hours...</button>
 
-            </div>
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                           
+                              <form id="non_billing_form" name="non_billing_form">
+                           </div>
                         </div>
-<div class="col-md-12">
-  <b>Enter Date: <input type = "text" id = "datepicker-6"></b>
-  <br><br><br>
-  
-    <div class="card card-plain table-plain-bg">
-        <div class="card-header ">
-          <div id="Billing">
-            <h4 class="card-title">Billing Hours</h4>
-            
-            <!-- <input type="date" name="date"> -->
-            <!-- <input type = "text" id = "datepicker-6"> -->
-        <!-- </div> -->
-                               
-  
-
-<div class="container">  
-<form id=billing_form>  
- <!-- {% csrf_token %}   -->
- <div class="more">  
-<br>
-<table class="table table-bordered">
-
-<tbody>
-  <tr>
-    <th>Project Name</th>
-    <td><select class="select1" id="select1[]" name="project[]">
-    <option value="0">Select Project</option>
-    </select><br></td>
-      </tr>
-      <tr>
-        <th>Description</th>
-        <td><textarea rows="2" cols="75" placeholder="Description" id="description" name="description[]"></textarea></td>
-      </tr>
-      <tr>
-        <th>Time (Hours)</th>
-        <td><input type="time" name="hours[]" max="8" id="hours">  [ hh:mm ]</td>
-      </tr>
-    </tbody>
-
-  
-<input type="text" name="is_billing[]" id="is_billing" value="true" >
-  </table>
-  <button class="btn btn-primary btn-copy" type="button">Add More...</button>
-<br>
-</div>
-  
-  </div>
-</div>
-  <div id="NonBilling">
-<br><br>
-  <div class="card-header ">
-     <h4 class="card-title">Non-Billing Hours</h4><br>
- </div>
- <table class="table table-bordered">
-
-<tbody>
-  <tr>
-    <th>Project Name</th>
-    <td><select class="select1" id="select1[]" name="project[]">
-        <option value="0">Select Project</option>
-    </select></td>
-      </tr>
-      <tr>
-        <th>Description</th>
-        <td><textarea rows="5" cols="75" placeholder="Description" id="description" name="description[]"></textarea></td>
-      </tr>
-      <tr>
-        <th>Time (Hours)</th>
-        <td><input type="time" name="hours[]" id="hours">  [ hh:mm ]</td>
-      </tr>
-    </tbody>
-
-  
-<input type="text" name="is_billing[]" id="is_billing" value="false" >
-  </table>
-  <button class="center" id="saveTask" type="button">Submit</button>
-    </form>
-</div>
-
-
-    
-    
-
-
-                            </div>
+                        <div id="NonBilling">
+                        <br><br>
+                        <div class="card-header ">
+                        <h4 class="card-title">Non-Billing Hours</h4><br>
                         </div>
-                    </div>
-                </div>
+                        <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                        <th>Project Name</th>
+                        <td><select class="select1" id="select1" name="project">
+                        <option value="0">Select Project</option>
+                        </select></td>
+                        </tr>
+                        <tr>
+                        <th>Description</th>
+                        <td><textarea rows="5" cols="75" placeholder="Description" id="description" name="description"></textarea></td>
+                        </tr>
+                        <tr>
+                        <th>Time (Hours)</th>
+                        <td><input type="time" name="hours" id="hours">  [ hh:mm ]</td>
+                        </tr>
+                        </tbody>
+                        <input type="text" name="is_billing" id="is_billing" value="false" >
+                        </table>
+                        </form>
+                        <button class="btn btn-primary btn-copy2" type="button">Add More Non-Billing hours...</button><br><br>
+                        <button class="center" id="saveTask" type="button">Submit</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
-            <footer class="footer">
-                <div class="container">
-                    <nav>
-                        
-                        <p class="copyright text-center">
-                            ©
-                            
-                            <a href="http://www.thoughtwin.com">Thoughtwin</a>, made with love by Python Team
-                        </p>
-                    </nav>
-                </div>
-            </footer>
-        </div>
-    </div>
+         </div>
+         <footer class="footer">
+            <div class="container">
+               <nav>
+                  <p class="copyright text-center">
+                     ©
+                     <a href="http://www.thoughtwin.com">Thoughtwin</a>, made with love by Python Team
+                  </p>
+               </nav>
+            </div>
+         </footer>
+      </div>
+   </div>
 </body>
-<!-- <script src="/static/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
-<script src="/static/js/core/popper.min.js" type="text/javascript"></script>
-<script src="/static/js/core/bootstrap.min.js" type="text/javascript"></script>
-<script src="/static/js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script> -->
-<!-- <script type="text/javascript" src="/static/customizedjs/jquery.validate.js"></script>
-   <script>
-      $("#billing_form").validate({
-              rules: {
-                  description: "required",
-              },
-              messages: {
-                  description: "<br>Please Write Description",
-                  
-              }
-          })
-   </script> -->
-   
-
 </html>
