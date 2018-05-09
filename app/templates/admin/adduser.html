@@ -1,14 +1,12 @@
 {% include "header.html" %}
 <link rel="stylesheet" href="/static/css/screen.css" />
 <script type="text/javascript" src="/static/customizedjs/session.js"></script>
-<!-- <script type="text/javascript" src="/static/customizedjs/user.js"></script> -->
+<script type="text/javascript" src="/static/customizedjs/cookies.js"></script>
 <script type="text/javascript">
    $(document).ready(function(){
              $("#adduserform").submit(function(event){
               event.preventDefault();
-               alert(baseUrl);
-               var url = baseUrl+"admin/"
-                
+               var url = baseUrl+"/user";
                 console.log(baseUrl);
                  $.ajax({
                   url: url,
@@ -59,9 +57,6 @@
          });
 </script>
 
-<script>
-	checkCookie();
-</script>
 <body>
    <div class="wrapper">
    <div class="sidebar" data-image="/static/img/sidebar-5.jpg">

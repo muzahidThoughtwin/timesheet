@@ -12,7 +12,7 @@ if(role == 1 && urlchecker != 'admin' ){
 if(role == 3 && urlchecker != 'user' ){
 	location.replace("../../user/login");
 }
-if(!role){
-	location.replace("../../user/login");
-}
+// if(!role){
+// 	location.replace("../../user/login");
+// }
 
