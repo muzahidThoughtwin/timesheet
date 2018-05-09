@@ -21,34 +21,33 @@ class ProjectView(APIView):
 			if not(project_data.is_valid()):
 				return Response(project_data.errors)
 			project_data.save()
-			return Response(project_data.data,status=status.HTTP_201_CREATED)
+			return Response("Project created successfully",status=status.HTTP_201_CREATED)
 		except Exception as err:
 			print(err)
-			return Response("Error")
+			return Response("Error while creating project")
 
-
-	def get(self,request):
+	def get(self,request,project_id=None):
 		try:
-			# if(project_id):
-			# 	get_project_data = UserProfile.objects.get(pk=project_id)
-			# 	project_data = ProjectSerializer(get_project_data)
-			# else:
-			get_project_data = Projects.objects.all()
-			project_data = ProjectSerializer(get_project_data,many=True)
-			return Response(project_data.data)
+			if(project_id):
+				project_data = Projects.objects.get(pk=project_id)
+				get_data = ProjectSerializer(project_data)
+			else:
+				project_data = Projects.objects.all()
+				get_data = ProjectSerializer(project_data,many=True)
+			return Response(get_data.data,status=status.HTTP_200_OK)
 		except Exception as err: 
 			print(err) 
 			return Response("Error")
 
-	# def put(self,request,project_id):
-	# 	try:
-			
-	# 		get_data = Projects.objects.get(pk=project_id)
-	# 		update_data = ProjectSerializer(get_data,data=request.data)
-	# 		print(update_data)
-	# 		if update_data.is_valid():
-	# 			update_data.save()
-	# 			return Response(update_data.data)
-	# 	except:
-	# 		return Response("Error")
+	def put(self,request,project_id):
+		try:
+			get_data = Projects.objects.get(pk=project_id)
+			update_data = ProjectSerializer(get_data,data=request.data)
+			if update_data.is_valid():
+				update_data.save()
+				return Response("Project details updated Successfully")
+			else:
+				return Response(update_data.errors)	
+		except:
+			return Response("Error")
 

@@ -21,14 +21,18 @@ from django.utils import timezone
 ## written by aarti
 class TaskView(APIView):
 
-	def get(self,request,user_id=None):
-		# if(user_id):
-		# 	userprofile = UserProfile.objects.get(pk=user_id)
-		# 	user_data = UserSerializer(userprofile)
-		# else:
-		task_data = Tasks.objects.all()
-		get_data = TaskSerializer(userData, many=True)
-		return Response(get_data.data,status=status.HTTP_200_OK)
+	def get(self,request,task_id=None):
+		try:
+			if(task_id):
+				task_data = Tasks.objects.get(pk=task_id)
+				get_data = TaskSerializer(task_data)
+			else:
+				task_data = Tasks.objects.all()
+				get_data = TaskSerializer(task_data, many=True)
+			return Response(get_data.data,status=status.HTTP_200_OK)
+		except Exception as err:
+			print(err)
+			return Response("Error")
 		
 	def post(self,request):
 		try:
@@ -49,7 +53,7 @@ class TaskView(APIView):
 				update_data = TaskSerializer(get_data, data=request.data)
 				if update_data.is_valid():
 					update_data.save()
-					return Response("Data updated Successfully")
+					return Response("Task details updated Successfully")
 				else:
 					return Response(update_data.errors)			
 			return Response("you are not able to update" ,status=status.HTTP_400_BAD_REQUEST)

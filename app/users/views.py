@@ -33,12 +33,10 @@ class UserProfileList(APIView):
 	permission_classes = (IsAuthenticatedOrCreate, )
 	def post(self,request):
 		try:
-			print("ji")
 			user = self.create_user(request)
 			if not(user):
 				return Response("Error while create user")
 			self.overWrite(request, {'user':user.id})
-			print(request.data)	
 			user_data = UserSerializer(data=request.data)
 			if not(user_data.is_valid()):
 				return Response(user_data.errors)
@@ -81,9 +79,7 @@ class UserProfileList(APIView):
 		try:
 			
 			get_data = UserProfile.objects.get(pk=user_id)
-
 			update_data = UserSerializer(get_data,data=request.data)
-			
 			if update_data.is_valid():
 				update_data.save()
 				get_name = update_data.data
@@ -97,7 +93,6 @@ class UserProfileList(APIView):
 						user = User.objects.get(username = current_user_name)
 						user.set_password(password)
 						return Response("PassChanged")
-					
 				user = User.objects.get(username = current_user_name)
 				user.username = new_user_name
 				user.save()
@@ -120,7 +115,6 @@ class Login(APIView):
 	permission_classes = (IsAuthenticatedOrCreate, )
 	def post(self,request,*args, **kwargs):
 		try:
-			# import pdb;pdb.set_trace();
 			email = request.POST.get('inputEmail')
 			password = request.POST.get('inputPassword')
 			if email:
@@ -129,7 +123,6 @@ class Login(APIView):
 					# email = request.POST.get('inputEmail')
 					# password = request.POST.get('inputPassword')
 					auth_user = authenticate(username=email, password=password)
-					print("auth_user")
 				except Exception as err:
 					print(err)
 					return Response('username or password incorrect')
@@ -172,7 +165,6 @@ class AssignProjectApi(APIView):
 		try:
 			project_id = request.POST.get('project')	
 			user_id = request.POST.get('user')
-			print("project_id,user_id")
 			user_data = UserProjectSerializer(data=request.data)
 			if not(user_data.is_valid()):
 				return Response(user_data.errors)
