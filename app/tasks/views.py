@@ -22,17 +22,16 @@ from django.utils import timezone
 class TaskView(APIView):
 
 	def get(self,request,task_id=None):
-		try:
-			if(task_id):
-				task_data = Tasks.objects.get(pk=task_id)
-				get_data = TaskSerializer(task_data)
-			else:
-				task_data = Tasks.objects.all()
-				get_data = TaskSerializer(task_data, many=True)
-			return Response(get_data.data,status=status.HTTP_200_OK)
-		except Exception as err:
-			print(err)
-			return Response("Error")
+		if request.GET.get('user') and request.GET.get('date'): 
+			get_task = Tasks.objects.filter(user=request.GET.get('user'), date=request.GET.get('date'))
+			task_data = TaskSerializer(get_task, many=True)
+		elif task_id:
+			get_task = Tasks.objects.filter(id=task_id)
+			task_data = TaskSerializer(get_task, many=True)
+		else:
+			get_task = Tasks.objects.all()
+			task_data = TaskSerializer(get_task, many=True)
+		return Response(task_data.data,status=status.HTTP_201_CREATED)
 		
 	def post(self,request):
 		try:
